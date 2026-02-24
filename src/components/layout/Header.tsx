@@ -22,7 +22,7 @@ export default function Header() {
           <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center group-hover:scale-110 transition-transform">
             <Scissors className="w-4 h-4 text-primary-foreground" />
           </div>
-          <span className="font-serif text-xl font-semibold tracking-tight">Lumière</span>
+          <span className="font-serif text-xl font-semibold tracking-tight">MS Salon & Academy</span>
         </Link>
 
         {/* Desktop nav */}

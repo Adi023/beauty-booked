@@ -11,7 +11,7 @@ export default function Footer() {
               <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
                 <Scissors className="w-3.5 h-3.5 text-primary-foreground" />
               </div>
-              <span className="font-serif text-lg font-semibold">Lumière</span>
+              <span className="font-serif text-lg font-semibold">MS Salon & Academy</span>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
               Premium beauty services crafted with passion and expertise. Your beauty, our artistry.
@@ -38,7 +38,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-10 pt-6 border-t border-border text-center text-xs text-muted-foreground">
-          © {new Date().getFullYear()} Lumière Beauty Salon. All rights reserved.
+          © {new Date().getFullYear()} MS Salon & Academy. All rights reserved.
         </div>
       </div>
     </footer>
