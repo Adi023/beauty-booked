@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Clock, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import type { Service } from '@/types/salon';
+import salonServicesImg from '@/assets/salon-services.jpg';
 
 const CATEGORY_EMOJI: Record<string, string> = {
   hair: '✂️',
@@ -58,7 +59,12 @@ export default function FeaturedServices() {
   });
 
   return (
-    <section className="py-16 md:py-24">
+    <section className="py-16 md:py-24 relative overflow-hidden">
+      {/* Decorative background image */}
+      <div className="absolute -right-20 top-10 w-72 h-72 md:w-96 md:h-96 rounded-full overflow-hidden opacity-10 blur-sm -z-10">
+        <img src={salonServicesImg} alt="" className="w-full h-full object-cover" />
+      </div>
+
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
