@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Scissors } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+import logoMs from '@/assets/logo-ms.png';
 
 const NAV_ITEMS = [
   { label: 'Home', path: '/' },
@@ -15,13 +16,14 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
 
+  // Don't show public header on admin pages
+  if (pathname.startsWith('/admin')) return null;
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border/50">
       <div className="container flex items-center justify-between h-16 md:h-20">
         <Link to="/" className="flex items-center gap-2 group">
-          <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center group-hover:scale-110 transition-transform">
-            <Scissors className="w-4 h-4 text-primary-foreground" />
-          </div>
+          <img src={logoMs} alt="MS Salon & Academy" className="w-10 h-10 rounded-lg object-cover group-hover:scale-110 transition-transform" />
           <span className="font-serif text-xl font-semibold tracking-tight">MS Salon & Academy</span>
         </Link>
 
@@ -41,6 +43,11 @@ export default function Header() {
               </Button>
             </Link>
           ))}
+          <Link to="/admin/login">
+            <Button variant="ghost" size="sm" className="rounded-full px-5 font-sans text-sm font-medium text-muted-foreground">
+              Admin
+            </Button>
+          </Link>
         </nav>
 
         {/* Mobile toggle */}
@@ -70,6 +77,11 @@ export default function Header() {
                   </Button>
                 </Link>
               ))}
+              <Link to="/admin/login" onClick={() => setOpen(false)}>
+                <Button variant="ghost" className="w-full justify-start rounded-lg font-sans text-muted-foreground">
+                  Admin Login
+                </Button>
+              </Link>
             </div>
           </motion.nav>
         )}
