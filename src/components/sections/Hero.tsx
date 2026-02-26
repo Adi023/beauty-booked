@@ -2,15 +2,20 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Star } from 'lucide-react';
 import { motion } from 'framer-motion';
+import heroBg from '@/assets/hero-bg.jpg';
 
 export default function Hero() {
   return (
     <section className="relative min-h-[90vh] flex items-center overflow-hidden">
-      {/* Decorative background */}
+      {/* Background image */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute top-20 right-0 w-[500px] h-[500px] rounded-full bg-primary/5 blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-accent/5 blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gold/5 blur-3xl" />
+        <img
+          src={heroBg}
+          alt="Luxury beauty salon interior"
+          className="w-full h-full object-cover"
+          loading="eager"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/80 to-background/40" />
       </div>
 
       <div className="container pt-24 pb-16 md:pt-32 md:pb-24">
