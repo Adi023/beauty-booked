@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Clock, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import type { Service } from '@/types/salon';
+import salonServicesImg from '@/assets/salon-services.jpg';
 
 const CATEGORY_EMOJI: Record<string, string> = {
   hair: '✂️',
