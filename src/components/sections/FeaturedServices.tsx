@@ -1,18 +1,18 @@
-import { useQuery } from '@tanstack/react-query';
-import { fetchServices } from '@/services/api';
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Clock, ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
-import type { Service } from '@/types/salon';
-import salonServicesImg from '@/assets/salon-services.jpg';
+import { useQuery } from "@tanstack/react-query";
+import { fetchServices } from "@/services/api";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Clock, ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
+import type { Service } from "@/types/salon";
+import salonServicesImg from "@/assets/salon-services.jpg";
 
 const CATEGORY_EMOJI: Record<string, string> = {
-  hair: '✂️',
-  nails: '💅',
-  skin: '✨',
-  makeup: '💄',
-  spa: '🧖',
+  hair: "✂️",
+  nails: "💅",
+  skin: "✨",
+  makeup: "💄",
+  package: "🎁",
 };
 
 function ServiceCard({ service, index }: { service: Service; index: number }) {
@@ -20,7 +20,7 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
+      viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay: index * 0.08 }}
     >
       <Link to={`/book?service=${service.id}`}>
@@ -39,7 +39,9 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
           </p>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 text-sm">
-              <span className="font-semibold text-primary">${service.price}</span>
+              <span className="font-semibold text-primary">
+                ₹{service.price}
+              </span>
               <span className="flex items-center gap-1 text-muted-foreground">
                 <Clock className="w-3.5 h-3.5" /> {service.duration}m
               </span>
@@ -54,7 +56,7 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
 
 export default function FeaturedServices() {
   const { data: services = [] } = useQuery({
-    queryKey: ['services'],
+    queryKey: ["services"],
     queryFn: fetchServices,
   });
 
@@ -62,7 +64,11 @@ export default function FeaturedServices() {
     <section className="py-16 md:py-24 relative overflow-hidden">
       {/* Decorative background image */}
       <div className="absolute -right-20 top-10 w-72 h-72 md:w-96 md:h-96 rounded-full overflow-hidden opacity-10 blur-sm -z-10">
-        <img src={salonServicesImg} alt="" className="w-full h-full object-cover" />
+        <img
+          src={salonServicesImg}
+          alt=""
+          className="w-full h-full object-cover"
+        />
       </div>
 
       <div className="container">
@@ -72,7 +78,9 @@ export default function FeaturedServices() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="font-serif text-3xl md:text-4xl font-bold mb-3">Our Services</h2>
+          <h2 className="font-serif text-3xl md:text-4xl font-bold mb-3">
+            Our Services
+          </h2>
           <p className="text-muted-foreground max-w-md mx-auto">
             From signature cuts to full-body pampering — we've got you covered.
           </p>
@@ -86,7 +94,10 @@ export default function FeaturedServices() {
 
         <div className="text-center mt-10">
           <Link to="/services">
-            <Button variant="outline" className="rounded-full px-8 font-sans gap-2">
+            <Button
+              variant="outline"
+              className="rounded-full px-8 font-sans gap-2"
+            >
               View All Services <ArrowRight className="w-4 h-4" />
             </Button>
           </Link>

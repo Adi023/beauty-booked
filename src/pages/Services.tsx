@@ -1,29 +1,30 @@
-import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { fetchServices } from '@/services/api';
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Clock, ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
-import type { ServiceCategory } from '@/types/salon';
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { fetchServices } from "@/services/api";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Clock, ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
+import type { ServiceCategory } from "@/types/salon";
 
-const CATEGORIES: { label: string; value: ServiceCategory | 'all' }[] = [
-  { label: 'All', value: 'all' },
-  { label: '✂️ Hair', value: 'hair' },
-  { label: '💅 Nails', value: 'nails' },
-  { label: '✨ Skin', value: 'skin' },
-  { label: '💄 Makeup', value: 'makeup' },
-  { label: '🧖 Spa', value: 'spa' },
+const CATEGORIES: { label: string; value: ServiceCategory | "all" }[] = [
+  { label: "All", value: "all" },
+  { label: "✂️ Hair", value: "hair" },
+  { label: "💅 Nails", value: "nails" },
+  { label: "✨ Skin", value: "skin" },
+  { label: "💄 Makeup", value: "makeup" },
+  { label: "🎁 Packages", value: "package" },
 ];
 
 export default function Services() {
-  const [filter, setFilter] = useState<ServiceCategory | 'all'>('all');
+  const [filter, setFilter] = useState<ServiceCategory | "all">("all");
   const { data: services = [] } = useQuery({
-    queryKey: ['services'],
+    queryKey: ["services"],
     queryFn: fetchServices,
   });
 
-  const filtered = filter === 'all' ? services : services.filter(s => s.category === filter);
+  const filtered =
+    filter === "all" ? services : services.filter((s) => s.category === filter);
 
   return (
     <main className="pt-24 pb-16 md:pt-32 md:pb-24">
@@ -33,7 +34,9 @@ export default function Services() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-10"
         >
-          <h1 className="font-serif text-3xl md:text-5xl font-bold mb-3">Our Services</h1>
+          <h1 className="font-serif text-3xl md:text-5xl font-bold mb-3">
+            Our Services
+          </h1>
           <p className="text-muted-foreground text-lg max-w-lg">
             Explore our full menu of beauty and wellness treatments.
           </p>
@@ -41,10 +44,10 @@ export default function Services() {
 
         {/* Filter chips */}
         <div className="flex flex-wrap gap-2 mb-8">
-          {CATEGORIES.map(cat => (
+          {CATEGORIES.map((cat) => (
             <Button
               key={cat.value}
-              variant={filter === cat.value ? 'default' : 'outline'}
+              variant={filter === cat.value ? "default" : "outline"}
               size="sm"
               className="rounded-full font-sans"
               onClick={() => setFilter(cat.value)}
@@ -72,7 +75,9 @@ export default function Services() {
                   </p>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3 text-sm">
-                      <span className="font-semibold text-primary">${service.price}</span>
+                      <span className="font-semibold text-primary">
+                        ₹{service.price}
+                      </span>
                       <span className="flex items-center gap-1 text-muted-foreground">
                         <Clock className="w-3.5 h-3.5" /> {service.duration}m
                       </span>

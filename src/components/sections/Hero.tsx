@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { ArrowRight, Star } from 'lucide-react';
-import { motion } from 'framer-motion';
-import heroBg from '@/assets/hero-bg.jpg';
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, Star } from "lucide-react";
+import { motion } from "framer-motion";
+import heroBg from "@/assets/hero-bg.jpg";
 
 export default function Hero() {
   return (
@@ -47,8 +47,9 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-lg md:text-xl text-muted-foreground max-w-lg mb-8 leading-relaxed"
           >
-            Experience luxury beauty services tailored to you.
-            Book your appointment in seconds and let our expert stylists transform your look.
+            Experience luxury beauty services tailored to you. Book your
+            appointment in seconds and let our expert stylists transform your
+            look.
           </motion.p>
 
           <motion.div
@@ -58,13 +59,20 @@ export default function Hero() {
             className="flex flex-col sm:flex-row gap-3"
           >
             <Link to="/book">
-              <Button size="lg" className="rounded-full px-8 shadow-lg shadow-primary/25 font-sans text-base gap-2 group">
+              <Button
+                size="lg"
+                className="rounded-full px-8 shadow-lg shadow-primary/25 font-sans text-base gap-2 group"
+              >
                 Book Appointment
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
             <Link to="/services">
-              <Button size="lg" variant="outline" className="rounded-full px-8 font-sans text-base">
+              <Button
+                size="lg"
+                variant="outline"
+                className="rounded-full px-8 font-sans text-base"
+              >
                 View Services
               </Button>
             </Link>
@@ -78,17 +86,19 @@ export default function Hero() {
             className="mt-12 flex items-center gap-4"
           >
             <div className="flex -space-x-3">
-              {[0, 1, 2, 3].map(i => (
+              {[0, 1, 2, 3].map((i) => (
                 <div
                   key={i}
                   className="w-10 h-10 rounded-full border-2 border-background bg-muted flex items-center justify-center text-xs font-bold text-muted-foreground"
                 >
-                  {['SL', 'MC', 'AP', 'ER'][i]}
+                  {["MS", "PC", "AP", "ER"][i]}
                 </div>
               ))}
             </div>
             <div className="text-sm text-muted-foreground">
-              <span className="font-semibold text-foreground">4 expert stylists</span>
+              <span className="font-semibold text-foreground">
+                4 expert stylists
+              </span>
               <br />
               ready to welcome you
             </div>

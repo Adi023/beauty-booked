@@ -8,7 +8,7 @@ export interface Service {
   image?: string;
 }
 
-export type ServiceCategory = 'hair' | 'nails' | 'skin' | 'makeup' | 'spa';
+export type ServiceCategory = "hair" | "nails" | "skin" | "makeup" | "package";
 
 export interface Stylist {
   id: string;
@@ -32,7 +32,7 @@ export interface Booking {
   stylistId: string;
   date: string; // ISO date
   time: string;
-  status: 'confirmed' | 'pending' | 'cancelled';
+  status: "confirmed" | "pending" | "cancelled";
   customerName: string;
   customerPhone: string;
 }

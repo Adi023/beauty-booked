@@ -1,11 +1,27 @@
-import { Sparkles, Shield, Clock, Heart } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Sparkles, Shield, Clock, Heart } from "lucide-react";
+import { motion } from "framer-motion";
 
 const FEATURES = [
-  { icon: Sparkles, title: 'Expert Stylists', desc: 'Our team holds international certifications and trains continuously.' },
-  { icon: Shield, title: 'Premium Products', desc: 'We exclusively use salon-grade, cruelty-free formulas.' },
-  { icon: Clock, title: 'Easy Booking', desc: 'Book in seconds, get instant confirmation, reschedule anytime.' },
-  { icon: Heart, title: 'Personal Touch', desc: 'Every visit is tailored to your unique style and preferences.' },
+  {
+    icon: Sparkles,
+    title: "Expert Stylists",
+    desc: "Our team holds international certifications and trains continuously.",
+  },
+  {
+    icon: Shield,
+    title: "Premium Products",
+    desc: "We exclusively use salon-grade, cruelty-free formulas.",
+  },
+  {
+    icon: Clock,
+    title: "Easy Booking",
+    desc: "Book in seconds, get instant confirmation, reschedule anytime.",
+  },
+  {
+    icon: Heart,
+    title: "Personal Touch",
+    desc: "Every visit is tailored to your unique style and preferences.",
+  },
 ];
 
 export default function WhyUs() {
@@ -18,7 +34,9 @@ export default function WhyUs() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="font-serif text-3xl md:text-4xl font-bold mb-3">Why Lumière</h2>
+          <h2 className="font-serif text-3xl md:text-4xl font-bold mb-3">
+            Why MS Salon & Academy
+          </h2>
           <p className="text-muted-foreground max-w-md mx-auto">
             A beauty experience designed around you.
           </p>
@@ -37,8 +55,12 @@ export default function WhyUs() {
               <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
                 <f.icon className="w-5 h-5 text-primary" />
               </div>
-              <h3 className="font-serif text-lg font-semibold mb-2">{f.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
+              <h3 className="font-serif text-lg font-semibold mb-2">
+                {f.title}
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {f.desc}
+              </p>
             </motion.div>
           ))}
         </div>
