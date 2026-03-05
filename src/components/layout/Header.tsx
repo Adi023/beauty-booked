@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, User, LogIn } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useUserStore } from '@/stores/userStore';
 import logoMs from '@/assets/logo-ms.png';
 
 const NAV_ITEMS = [
@@ -15,8 +16,8 @@ const NAV_ITEMS = [
 export default function Header() {
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
+  const { isAuthenticated, user } = useUserStore();
 
-  // Don't show public header on admin pages
   if (pathname.startsWith('/admin')) return null;
 
   return (
@@ -43,11 +44,29 @@ export default function Header() {
               </Button>
             </Link>
           ))}
-          <Link to="/admin/login">
-            <Button variant="ghost" size="sm" className="rounded-full px-5 font-sans text-sm font-medium text-muted-foreground">
-              Admin
-            </Button>
-          </Link>
+          
+          {isAuthenticated ? (
+            <Link to="/dashboard">
+              <Button
+                variant={pathname === '/dashboard' ? 'default' : 'outline'}
+                size="sm"
+                className="rounded-full px-5 font-sans text-sm font-medium gap-1.5"
+              >
+                <User className="w-3.5 h-3.5" />
+                {user?.name?.split(' ')[0]}
+              </Button>
+            </Link>
+          ) : (
+            <Link to="/login">
+              <Button
+                variant="outline"
+                size="sm"
+                className="rounded-full px-5 font-sans text-sm font-medium gap-1.5"
+              >
+                <LogIn className="w-3.5 h-3.5" /> Login
+              </Button>
+            </Link>
+          )}
         </nav>
 
         {/* Mobile toggle */}
@@ -77,11 +96,30 @@ export default function Header() {
                   </Button>
                 </Link>
               ))}
-              <Link to="/admin/login" onClick={() => setOpen(false)}>
-                <Button variant="ghost" className="w-full justify-start rounded-lg font-sans text-muted-foreground">
-                  Admin Login
-                </Button>
-              </Link>
+              
+              {isAuthenticated ? (
+                <Link to="/dashboard" onClick={() => setOpen(false)}>
+                  <Button
+                    variant={pathname === '/dashboard' ? 'default' : 'outline'}
+                    className="w-full justify-start rounded-lg font-sans gap-2"
+                  >
+                    <User className="w-4 h-4" /> My Dashboard
+                  </Button>
+                </Link>
+              ) : (
+                <>
+                  <Link to="/login" onClick={() => setOpen(false)}>
+                    <Button variant="outline" className="w-full justify-start rounded-lg font-sans gap-2">
+                      <LogIn className="w-4 h-4" /> Login
+                    </Button>
+                  </Link>
+                  <Link to="/signup" onClick={() => setOpen(false)}>
+                    <Button className="w-full justify-start rounded-lg font-sans gap-2">
+                      <User className="w-4 h-4" /> Sign Up
+                    </Button>
+                  </Link>
+                </>
+              )}
             </div>
           </motion.nav>
         )}
