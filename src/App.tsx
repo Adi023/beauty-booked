@@ -9,7 +9,7 @@ import Index from "./pages/Index";
 import Services from "./pages/Services";
 import Book from "./pages/Book";
 import NotFound from "./pages/NotFound";
-import AdminLogin from "./pages/AdminLogin";
+
 import AdminDashboard from "./pages/AdminDashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -31,7 +31,7 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/login" element={<Login />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
