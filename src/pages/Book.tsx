@@ -1,5 +1,5 @@
-import { useState, useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useState, useMemo, useEffect } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import {
   fetchServices,
@@ -7,6 +7,7 @@ import {
   fetchTimeSlots,
   createBooking,
 } from "@/services/api";
+import { useUserStore } from "@/stores/userStore";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -27,6 +28,9 @@ const STEPS = ["Service", "Stylist", "Date & Time", "Confirm"];
 export default function Book() {
   const [searchParams] = useSearchParams();
   const preselected = searchParams.get("service");
+  const navigate = useNavigate();
+
+  const { isAuthenticated, user, addBooking } = useUserStore();
 
   const [step, setStep] = useState(preselected ? 1 : 0);
   const [serviceId, setServiceId] = useState(preselected || "");
@@ -36,6 +40,15 @@ export default function Book() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+
+  // Pre-fill logged-in user details
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      setName(user.name);
+      setPhone(user.phone);
+      setEmail(user.email);
+    }
+  }, [isAuthenticated, user]);
 
   const { data: services = [] } = useQuery({
     queryKey: ["services"],
@@ -63,8 +76,24 @@ export default function Book() {
   const bookMutation = useMutation({
     mutationFn: createBooking,
     onSuccess: () => {
+      // Add booking to user store if logged in
+      if (isAuthenticated && selectedService && selectedStylist) {
+        addBooking({
+          id: crypto.randomUUID(),
+          serviceName: selectedService.name,
+          stylistName: selectedStylist.name,
+          date: format(selectedDate, "yyyy-MM-dd"),
+          time: selectedTime,
+          price: selectedService.price,
+          duration: selectedService.duration,
+          status: "confirmed",
+        });
+      }
+
       toast.success("Appointment booked!", {
-        description: "You will receive a confirmation shortly.",
+        description: isAuthenticated
+          ? "View it in your dashboard."
+          : "You will receive a confirmation shortly.",
       });
       setStep(4);
     },
@@ -90,6 +119,18 @@ export default function Book() {
       });
     } else {
       setStep((s) => s + 1);
+    }
+  };
+
+  const handleReset = () => {
+    setStep(0);
+    setServiceId("");
+    setStylistId("");
+    setSelectedTime("");
+    if (!isAuthenticated) {
+      setName("");
+      setPhone("");
+      setEmail("");
     }
   };
 
@@ -314,7 +355,6 @@ export default function Book() {
                     <div className="flex justify-between border-t border-border pt-2 mt-2">
                       <span className="font-semibold">Total</span>
                       <span className="font-semibold text-primary">
-                        {" "}
                         ₹{selectedService?.price}
                       </span>
                     </div>
@@ -328,6 +368,7 @@ export default function Book() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="rounded-xl"
+                  disabled={isAuthenticated}
                 />
                 <Input
                   placeholder="Phone number"
@@ -335,6 +376,7 @@ export default function Book() {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   className="rounded-xl"
+                  disabled={isAuthenticated}
                 />
                 <Input
                   placeholder="Email address (optional)"
@@ -342,7 +384,21 @@ export default function Book() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="rounded-xl"
+                  disabled={isAuthenticated}
                 />
+                {isAuthenticated && (
+                  <p className="text-xs text-muted-foreground">
+                    Booking as <span className="font-medium">{user?.name}</span> — details from your profile.
+                  </p>
+                )}
+                {!isAuthenticated && (
+                  <p className="text-xs text-muted-foreground">
+                    <button onClick={() => navigate("/login")} className="text-primary font-medium hover:underline">
+                      Log in
+                    </button>{" "}
+                    to save bookings to your dashboard.
+                  </p>
+                )}
               </div>
             </motion.div>
           )}
@@ -366,20 +422,23 @@ export default function Book() {
                 {format(selectedDate, "EEEE, MMM d")} at {selectedTime} is
                 confirmed.
               </p>
-              <Button
-                className="rounded-full px-8 font-sans"
-                onClick={() => {
-                  setStep(0);
-                  setServiceId("");
-                  setStylistId("");
-                  setSelectedTime("");
-                  setName("");
-                  setPhone("");
-                  setEmail("");
-                }}
-              >
-                Book Another
-              </Button>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                {isAuthenticated && (
+                  <Button
+                    variant="outline"
+                    className="rounded-full px-8 font-sans"
+                    onClick={() => navigate("/dashboard")}
+                  >
+                    View Dashboard
+                  </Button>
+                )}
+                <Button
+                  className="rounded-full px-8 font-sans"
+                  onClick={handleReset}
+                >
+                  Book Another
+                </Button>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
