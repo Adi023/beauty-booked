@@ -33,6 +33,7 @@ interface UserState {
   logout: () => void;
   updateProfile: (updates: Partial<UserProfile>) => void;
   cancelBooking: (id: string) => void;
+  rescheduleBooking: (id: string, newDate: string, newTime: string) => void;
   addBooking: (booking: UserBooking) => void;
 }
 
@@ -141,6 +142,13 @@ export const useUserStore = create<UserState>((set, get) => ({
     set((state) => ({
       bookings: state.bookings.map((b) =>
         b.id === id ? { ...b, status: "cancelled" as const } : b
+      ),
+    })),
+
+  rescheduleBooking: (id, newDate, newTime) =>
+    set((state) => ({
+      bookings: state.bookings.map((b) =>
+        b.id === id ? { ...b, date: newDate, time: newTime } : b
       ),
     })),
 
