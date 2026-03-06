@@ -24,11 +24,15 @@ import { format, parseISO, isAfter } from "date-fns";
 function BookingCard({
   booking,
   onCancel,
+  onRebook,
   showCancel,
+  showRebook,
 }: {
   booking: UserBooking;
   onCancel?: () => void;
+  onRebook?: () => void;
   showCancel?: boolean;
+  showRebook?: boolean;
 }) {
   const statusColors: Record<string, string> = {
     confirmed: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
