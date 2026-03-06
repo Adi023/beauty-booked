@@ -197,7 +197,12 @@ export default function Dashboard() {
                       key={b.id}
                       booking={b}
                       showCancel
+                      showReschedule
                       onCancel={() => handleCancel(b.id)}
+                      onReschedule={() => {
+                        setRescheduleTarget(b);
+                        setRescheduleOpen(true);
+                      }}
                     />
                   ))
                 )}
@@ -299,7 +304,16 @@ export default function Dashboard() {
             </TabsContent>
           </Tabs>
         </motion.div>
+
+        <RescheduleDialog
+          booking={rescheduleTarget}
+          open={rescheduleOpen}
+          onOpenChange={setRescheduleOpen}
+          onConfirm={handleReschedule}
+        />
       </div>
     </main>
+  );
+}
   );
 }
