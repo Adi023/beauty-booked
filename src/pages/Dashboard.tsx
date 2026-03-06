@@ -17,17 +17,22 @@ import {
   Save,
   LogOut,
   ChevronRight,
+  RotateCcw,
 } from "lucide-react";
 import { format, parseISO, isAfter } from "date-fns";
 
 function BookingCard({
   booking,
   onCancel,
+  onRebook,
   showCancel,
+  showRebook,
 }: {
   booking: UserBooking;
   onCancel?: () => void;
+  onRebook?: () => void;
   showCancel?: boolean;
+  showRebook?: boolean;
 }) {
   const statusColors: Record<string, string> = {
     confirmed: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
@@ -61,16 +66,28 @@ function BookingCard({
             <div className="font-semibold text-primary mt-2">₹{booking.price}</div>
           </div>
         </div>
-        {showCancel && booking.status === "confirmed" && (
-          <Button
-            variant="outline"
-            size="sm"
-            className="mt-3 rounded-full text-destructive border-destructive/30 hover:bg-destructive/10 gap-1 font-sans"
-            onClick={onCancel}
-          >
-            <X className="w-3.5 h-3.5" /> Cancel Booking
-          </Button>
-        )}
+        <div className="flex gap-2 mt-3">
+          {showCancel && booking.status === "confirmed" && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="rounded-full text-destructive border-destructive/30 hover:bg-destructive/10 gap-1 font-sans"
+              onClick={onCancel}
+            >
+              <X className="w-3.5 h-3.5" /> Cancel Booking
+            </Button>
+          )}
+          {showRebook && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="rounded-full gap-1 font-sans"
+              onClick={onRebook}
+            >
+              <RotateCcw className="w-3.5 h-3.5" /> Rebook
+            </Button>
+          )}
+        </div>
       </CardContent>
     </Card>
   );
@@ -180,7 +197,14 @@ export default function Dashboard() {
                     </CardContent>
                   </Card>
                 ) : (
-                  past.map((b) => <BookingCard key={b.id} booking={b} />)
+                  past.map((b) => (
+                    <BookingCard
+                      key={b.id}
+                      booking={b}
+                      showRebook
+                      onRebook={() => navigate(`/book?service=${encodeURIComponent(b.serviceName)}`)}
+                    />
+                  ))
                 )}
               </div>
             </TabsContent>
