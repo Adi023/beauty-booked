@@ -19,6 +19,7 @@ import {
   LogOut,
   ChevronRight,
   RotateCcw,
+  CalendarClock,
 } from "lucide-react";
 import { format, parseISO, isAfter } from "date-fns";
 
