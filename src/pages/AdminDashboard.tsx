@@ -294,11 +294,6 @@ export default function AdminDashboard() {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Link to="/">
-              <Button variant="ghost" size="sm" className="gap-1 text-sm">
-                <Home className="w-4 h-4" /> Site
-              </Button>
-            </Link>
             <Button
               variant="ghost"
               size="sm"
