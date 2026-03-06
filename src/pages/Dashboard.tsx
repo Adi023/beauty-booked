@@ -142,6 +142,13 @@ export default function Dashboard() {
     toast.success("Booking cancelled");
   };
 
+  const handleReschedule = (bookingId: string, newDate: string, newTime: string) => {
+    rescheduleBooking(bookingId, newDate, newTime);
+    setRescheduleOpen(false);
+    setRescheduleTarget(null);
+    toast.success("Booking rescheduled!");
+  };
+
   const handleLogout = () => {
     logout();
     navigate("/");
