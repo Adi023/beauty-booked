@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useUserStore, type UserBooking } from "@/stores/userStore";
+import RescheduleDialog from "@/components/RescheduleDialog";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import {
@@ -18,6 +19,7 @@ import {
   LogOut,
   ChevronRight,
   RotateCcw,
+  CalendarClock,
 } from "lucide-react";
 import { format, parseISO, isAfter } from "date-fns";
 
@@ -25,14 +27,18 @@ function BookingCard({
   booking,
   onCancel,
   onRebook,
+  onReschedule,
   showCancel,
   showRebook,
+  showReschedule,
 }: {
   booking: UserBooking;
   onCancel?: () => void;
   onRebook?: () => void;
+  onReschedule?: () => void;
   showCancel?: boolean;
   showRebook?: boolean;
+  showReschedule?: boolean;
 }) {
   const statusColors: Record<string, string> = {
     confirmed: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
@@ -66,7 +72,17 @@ function BookingCard({
             <div className="font-semibold text-primary mt-2">₹{booking.price}</div>
           </div>
         </div>
-        <div className="flex gap-2 mt-3">
+        <div className="flex flex-wrap gap-2 mt-3">
+          {showReschedule && booking.status === "confirmed" && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="rounded-full gap-1 font-sans"
+              onClick={onReschedule}
+            >
+              <CalendarClock className="w-3.5 h-3.5" /> Reschedule
+            </Button>
+          )}
           {showCancel && booking.status === "confirmed" && (
             <Button
               variant="outline"
@@ -74,7 +90,7 @@ function BookingCard({
               className="rounded-full text-destructive border-destructive/30 hover:bg-destructive/10 gap-1 font-sans"
               onClick={onCancel}
             >
-              <X className="w-3.5 h-3.5" /> Cancel Booking
+              <X className="w-3.5 h-3.5" /> Cancel
             </Button>
           )}
           {showRebook && (
@@ -94,11 +110,13 @@ function BookingCard({
 }
 
 export default function Dashboard() {
-  const { user, bookings, updateProfile, cancelBooking, logout } = useUserStore();
+  const { user, bookings, updateProfile, cancelBooking, rescheduleBooking, logout } = useUserStore();
   const navigate = useNavigate();
   const [editing, setEditing] = useState(false);
   const [editName, setEditName] = useState(user?.name || "");
   const [editPhone, setEditPhone] = useState(user?.phone || "");
+  const [rescheduleOpen, setRescheduleOpen] = useState(false);
+  const [rescheduleTarget, setRescheduleTarget] = useState<UserBooking | null>(null);
 
   if (!user) {
     navigate("/login");
@@ -122,6 +140,13 @@ export default function Dashboard() {
   const handleCancel = (id: string) => {
     cancelBooking(id);
     toast.success("Booking cancelled");
+  };
+
+  const handleReschedule = (bookingId: string, newDate: string, newTime: string) => {
+    rescheduleBooking(bookingId, newDate, newTime);
+    setRescheduleOpen(false);
+    setRescheduleTarget(null);
+    toast.success("Booking rescheduled!");
   };
 
   const handleLogout = () => {
@@ -179,7 +204,12 @@ export default function Dashboard() {
                       key={b.id}
                       booking={b}
                       showCancel
+                      showReschedule
                       onCancel={() => handleCancel(b.id)}
+                      onReschedule={() => {
+                        setRescheduleTarget(b);
+                        setRescheduleOpen(true);
+                      }}
                     />
                   ))
                 )}
@@ -281,6 +311,13 @@ export default function Dashboard() {
             </TabsContent>
           </Tabs>
         </motion.div>
+
+        <RescheduleDialog
+          booking={rescheduleTarget}
+          open={rescheduleOpen}
+          onOpenChange={setRescheduleOpen}
+          onConfirm={handleReschedule}
+        />
       </div>
     </main>
   );
