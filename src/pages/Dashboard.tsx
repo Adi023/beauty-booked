@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useUserStore, type UserBooking } from "@/stores/userStore";
+import RescheduleDialog from "@/components/RescheduleDialog";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import {
