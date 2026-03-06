@@ -104,18 +104,19 @@ function BookingCard({
             </Button>
           )}
         </div>
-        </div>
       </CardContent>
     </Card>
   );
 }
 
 export default function Dashboard() {
-  const { user, bookings, updateProfile, cancelBooking, logout } = useUserStore();
+  const { user, bookings, updateProfile, cancelBooking, rescheduleBooking, logout } = useUserStore();
   const navigate = useNavigate();
   const [editing, setEditing] = useState(false);
   const [editName, setEditName] = useState(user?.name || "");
   const [editPhone, setEditPhone] = useState(user?.phone || "");
+  const [rescheduleOpen, setRescheduleOpen] = useState(false);
+  const [rescheduleTarget, setRescheduleTarget] = useState<UserBooking | null>(null);
 
   if (!user) {
     navigate("/login");
