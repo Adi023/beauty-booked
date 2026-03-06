@@ -72,7 +72,17 @@ function BookingCard({
             <div className="font-semibold text-primary mt-2">₹{booking.price}</div>
           </div>
         </div>
-        <div className="flex gap-2 mt-3">
+        <div className="flex flex-wrap gap-2 mt-3">
+          {showReschedule && booking.status === "confirmed" && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="rounded-full gap-1 font-sans"
+              onClick={onReschedule}
+            >
+              <CalendarClock className="w-3.5 h-3.5" /> Reschedule
+            </Button>
+          )}
           {showCancel && booking.status === "confirmed" && (
             <Button
               variant="outline"
@@ -80,7 +90,7 @@ function BookingCard({
               className="rounded-full text-destructive border-destructive/30 hover:bg-destructive/10 gap-1 font-sans"
               onClick={onCancel}
             >
-              <X className="w-3.5 h-3.5" /> Cancel Booking
+              <X className="w-3.5 h-3.5" /> Cancel
             </Button>
           )}
           {showRebook && (
@@ -93,6 +103,7 @@ function BookingCard({
               <RotateCcw className="w-3.5 h-3.5" /> Rebook
             </Button>
           )}
+        </div>
         </div>
       </CardContent>
     </Card>
