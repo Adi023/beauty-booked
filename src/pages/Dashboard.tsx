@@ -126,6 +126,8 @@ export default function Dashboard() {
   }
 
   const today = new Date().toISOString().split("T")[0];
+  // Filter bookings for the current user
+  const bookings = allBookings.filter((b) => b.customerName === user.name);
   const upcoming = bookings.filter(
     (b) => b.status !== "cancelled" && b.status !== "completed" && isAfter(parseISO(b.date), new Date(today))
   );

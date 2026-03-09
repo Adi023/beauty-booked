@@ -31,7 +31,8 @@ export default function Book() {
   const preselected = searchParams.get("service");
   const navigate = useNavigate();
 
-  const { isAuthenticated, user, addBooking } = useUserStore();
+  const { isAuthenticated, user } = useUserStore();
+  const { addBooking } = useBookingStore();
 
   const [step, setStep] = useState(preselected ? 1 : 0);
   const [serviceId, setServiceId] = useState(preselected || "");
