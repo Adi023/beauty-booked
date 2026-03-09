@@ -79,16 +79,18 @@ export default function Book() {
     mutationFn: createBooking,
     onSuccess: () => {
       // Add booking to user store if logged in
-      if (isAuthenticated && selectedService && selectedStylist) {
+      if (isAuthenticated && selectedService && selectedStylist && user) {
         addBooking({
           id: crypto.randomUUID(),
+          customerName: user.name,
+          customerPhone: user.phone,
           serviceName: selectedService.name,
           stylistName: selectedStylist.name,
           date: format(selectedDate, "yyyy-MM-dd"),
           time: selectedTime,
           price: selectedService.price,
           duration: selectedService.duration,
-          status: "confirmed",
+          status: "pending",
         });
       }
 
