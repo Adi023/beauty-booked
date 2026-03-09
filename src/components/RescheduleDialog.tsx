@@ -24,7 +24,7 @@ const TIME_SLOTS = [
 ];
 
 interface RescheduleDialogProps {
-  booking: UserBooking | null;
+  booking: SharedBooking | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onConfirm: (bookingId: string, newDate: string, newTime: string) => void;

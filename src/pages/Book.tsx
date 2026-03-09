@@ -8,6 +8,7 @@ import {
   createBooking,
 } from "@/services/api";
 import { useUserStore } from "@/stores/userStore";
+import { useBookingStore } from "@/stores/bookingStore";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
