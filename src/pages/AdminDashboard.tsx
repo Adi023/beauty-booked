@@ -231,12 +231,16 @@ export default function AdminDashboard() {
     isAuthenticated,
     services,
     stylists,
+    bookings,
     addService,
     updateService,
     deleteService,
     addStylist,
     updateStylist,
     deleteStylist,
+    confirmBooking,
+    cancelBooking: adminCancelBooking,
+    completeBooking,
     logout,
   } = useAdminStore();
   const navigate = useNavigate();
