@@ -33,7 +33,7 @@ function BookingCard({
   showRebook,
   showReschedule,
 }: {
-  booking: Sharedoking;
+  booking: SharedBooking;
   onCancel?: () => void;
   onRebook?: () => void;
   onReschedule?: () => void;
