@@ -13,28 +13,13 @@ export interface UserProfile {
   joinedDate: string;
 }
 
-export interface UserBooking {
-  id: string;
-  serviceName: string;
-  stylistName: string;
-  date: string;
-  time: string;
-  price: number;
-  duration: number;
-  status: "confirmed" | "pending" | "cancelled" | "completed";
-}
-
 interface UserState {
   isAuthenticated: boolean;
   user: UserProfile | null;
-  bookings: UserBooking[];
   login: (email: string, password: string) => boolean;
   signup: (name: string, email: string, phone: string, password: string) => boolean;
   logout: () => void;
   updateProfile: (updates: Partial<UserProfile>) => void;
-  cancelBooking: (id: string) => void;
-  rescheduleBooking: (id: string, newDate: string, newTime: string) => void;
-  addBooking: (booking: UserBooking) => void;
 }
 
 const MOCK_BOOKINGS: UserBooking[] = [
