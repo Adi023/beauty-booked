@@ -22,59 +22,6 @@ interface UserState {
   updateProfile: (updates: Partial<UserProfile>) => void;
 }
 
-const MOCK_BOOKINGS: UserBooking[] = [
-  {
-    id: "b1",
-    serviceName: "Bridal Makeup",
-    stylistName: "Madhuri",
-    date: "2026-03-10",
-    time: "10:00",
-    price: 3250,
-    duration: 90,
-    status: "confirmed",
-  },
-  {
-    id: "b2",
-    serviceName: "Keratin Treatment",
-    stylistName: "Marcus Chen",
-    date: "2026-03-15",
-    time: "14:00",
-    price: 1299,
-    duration: 150,
-    status: "confirmed",
-  },
-  {
-    id: "b3",
-    serviceName: "Classic Facial",
-    stylistName: "Elena Rossi",
-    date: "2026-02-20",
-    time: "11:30",
-    price: 720,
-    duration: 75,
-    status: "completed",
-  },
-  {
-    id: "b4",
-    serviceName: "Signature Haircut",
-    stylistName: "Madhuri",
-    date: "2026-01-15",
-    time: "09:00",
-    price: 285,
-    duration: 45,
-    status: "completed",
-  },
-  {
-    id: "b5",
-    serviceName: "Gel Manicure",
-    stylistName: "Aisha Patel",
-    date: "2025-12-28",
-    time: "16:00",
-    price: 155,
-    duration: 45,
-    status: "cancelled",
-  },
-];
-
 const MOCK_USER: UserProfile = {
   id: "u1",
   name: "Priya Sharma",
@@ -88,15 +35,14 @@ const MOCK_ACCOUNTS: Record<string, { password: string; user: UserProfile }> = {
   "priya@example.com": { password: "password123", user: MOCK_USER },
 };
 
-export const useUserStore = create<UserState>((set, get) => ({
+export const useUserStore = create<UserState>((set) => ({
   isAuthenticated: false,
   user: null,
-  bookings: [],
 
   login: (email, password) => {
     const account = MOCK_ACCOUNTS[email.toLowerCase()];
     if (account && account.password === password) {
-      set({ isAuthenticated: true, user: account.user, bookings: MOCK_BOOKINGS });
+      set({ isAuthenticated: true, user: account.user });
       return true;
     }
     return false;
@@ -110,33 +56,15 @@ export const useUserStore = create<UserState>((set, get) => ({
       phone,
       joinedDate: new Date().toISOString().split("T")[0],
     };
-    // Add to mock accounts for future login
     MOCK_ACCOUNTS[email.toLowerCase()] = { password: _password, user: newUser };
-    set({ isAuthenticated: true, user: newUser, bookings: [] });
+    set({ isAuthenticated: true, user: newUser });
     return true;
   },
 
-  logout: () => set({ isAuthenticated: false, user: null, bookings: [] }),
+  logout: () => set({ isAuthenticated: false, user: null }),
 
   updateProfile: (updates) =>
     set((state) => ({
       user: state.user ? { ...state.user, ...updates } : null,
     })),
-
-  cancelBooking: (id) =>
-    set((state) => ({
-      bookings: state.bookings.map((b) =>
-        b.id === id ? { ...b, status: "cancelled" as const } : b
-      ),
-    })),
-
-  rescheduleBooking: (id, newDate, newTime) =>
-    set((state) => ({
-      bookings: state.bookings.map((b) =>
-        b.id === id ? { ...b, date: newDate, time: newTime } : b
-      ),
-    })),
-
-  addBooking: (booking) =>
-    set((state) => ({ bookings: [...state.bookings, booking] })),
 }));
