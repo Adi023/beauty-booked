@@ -33,7 +33,7 @@ function BookingCard({
   showRebook,
   showReschedule,
 }: {
-  booking: SharedBooking;
+  booking: SharedBoBooking;
   onCancel?: () => void;
   onRebook?: () => void;
   onReschedule?: () => void;
@@ -118,7 +118,7 @@ export default function Dashboard() {
   const [editName, setEditName] = useState(user?.name || "");
   const [editPhone, setEditPhone] = useState(user?.phone || "");
   const [rescheduleOpen, setRescheduleOpen] = useState(false);
-  const [rescheduleTarget, setRescheduleTarget] = useStatShe<Sharedoking | null>(null);
+  const [rescheduleTarget, setRescheduleTarget] = useSte<SharedBoedoking | null>(null);
 
   if (!user) {
     navigate("/login");
