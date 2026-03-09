@@ -6,18 +6,6 @@
 import { create } from "zustand";
 import type { Service, Stylist } from "@/types/salon";
 
-export interface AdminBooking {
-  id: string;
-  customerName: string;
-  customerPhone: string;
-  serviceName: string;
-  stylistName: string;
-  date: string;
-  time: string;
-  price: number;
-  duration: number;
-  status: "confirmed" | "pending" | "cancelled" | "completed";
-}
 
 interface AdminState {
   isAuthenticated: boolean;
