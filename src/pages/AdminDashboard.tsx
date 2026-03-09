@@ -314,7 +314,7 @@ export default function AdminDashboard() {
       </header>
 
       <div className="container py-8">
-        <Tabs defaultValue="services">
+        <Tabs defaultValue="bookings">
           <TabsList className="mb-6">
             <TabsTrigger value="bookings">Bookings</TabsTrigger>
             <TabsTrigger value="services">Services & Rates</TabsTrigger>
