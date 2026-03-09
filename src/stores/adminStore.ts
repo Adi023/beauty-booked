@@ -6,24 +6,11 @@
 import { create } from "zustand";
 import type { Service, Stylist } from "@/types/salon";
 
-export interface AdminBooking {
-  id: string;
-  customerName: string;
-  customerPhone: string;
-  serviceName: string;
-  stylistName: string;
-  date: string;
-  time: string;
-  price: number;
-  duration: number;
-  status: "confirmed" | "pending" | "cancelled" | "completed";
-}
 
 interface AdminState {
   isAuthenticated: boolean;
   services: Service[];
   stylists: Stylist[];
-  bookings: AdminBooking[];
   login: (username: string, password: string) => boolean;
   logout: () => void;
   addService: (service: Service) => void;
@@ -32,9 +19,6 @@ interface AdminState {
   addStylist: (stylist: Stylist) => void;
   updateStylist: (id: string, stylist: Partial<Stylist>) => void;
   deleteStylist: (id: string) => void;
-  confirmBooking: (id: string) => void;
-  cancelBooking: (id: string) => void;
-  completeBooking: (id: string) => void;
 }
 
 const INITIAL_SERVICES: Service[] = [
@@ -196,62 +180,10 @@ const INITIAL_STYLISTS: Stylist[] = [
   },
 ];
 
-const INITIAL_BOOKINGS: AdminBooking[] = [
-  {
-    id: "ab1",
-    customerName: "Priya Sharma",
-    customerPhone: "+91 98765 43210",
-    serviceName: "Bridal Makeup",
-    stylistName: "Madhuri",
-    date: "2026-03-10",
-    time: "10:00",
-    price: 3250,
-    duration: 90,
-    status: "pending",
-  },
-  {
-    id: "ab2",
-    customerName: "Priya Sharma",
-    customerPhone: "+91 98765 43210",
-    serviceName: "Keratin Treatment",
-    stylistName: "Marcus Chen",
-    date: "2026-03-15",
-    time: "14:00",
-    price: 1299,
-    duration: 150,
-    status: "pending",
-  },
-  {
-    id: "ab3",
-    customerName: "Anita Desai",
-    customerPhone: "+91 91234 56789",
-    serviceName: "HydraFacial",
-    stylistName: "Elena Rossi",
-    date: "2026-03-12",
-    time: "11:00",
-    price: 999,
-    duration: 60,
-    status: "confirmed",
-  },
-  {
-    id: "ab4",
-    customerName: "Riya Mehta",
-    customerPhone: "+91 87654 32100",
-    serviceName: "Classic Facial",
-    stylistName: "Elena Rossi",
-    date: "2026-02-20",
-    time: "11:30",
-    price: 720,
-    duration: 75,
-    status: "completed",
-  },
-];
-
 export const useAdminStore = create<AdminState>((set) => ({
   isAuthenticated: false,
   services: INITIAL_SERVICES,
   stylists: INITIAL_STYLISTS,
-  bookings: INITIAL_BOOKINGS,
 
   login: (username, password) => {
     if (username === "admin" && password === "admin123") {
@@ -288,25 +220,4 @@ export const useAdminStore = create<AdminState>((set) => ({
 
   deleteStylist: (id) =>
     set((state) => ({ stylists: state.stylists.filter((s) => s.id !== id) })),
-
-  confirmBooking: (id) =>
-    set((state) => ({
-      bookings: state.bookings.map((b) =>
-        b.id === id ? { ...b, status: "confirmed" as const } : b,
-      ),
-    })),
-
-  cancelBooking: (id) =>
-    set((state) => ({
-      bookings: state.bookings.map((b) =>
-        b.id === id ? { ...b, status: "cancelled" as const } : b,
-      ),
-    })),
-
-  completeBooking: (id) =>
-    set((state) => ({
-      bookings: state.bookings.map((b) =>
-        b.id === id ? { ...b, status: "completed" as const } : b,
-      ),
-    })),
 }));

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAdminStore } from "@/stores/adminStore";
+import { useBookingStore } from "@/stores/bookingStore";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -231,18 +232,20 @@ export default function AdminDashboard() {
     isAuthenticated,
     services,
     stylists,
-    bookings,
     addService,
     updateService,
     deleteService,
     addStylist,
     updateStylist,
     deleteStylist,
+    logout,
+  } = useAdminStore();
+  const {
+    bookings,
     confirmBooking,
     cancelBooking: adminCancelBooking,
     completeBooking,
-    logout,
-  } = useAdminStore();
+  } = useBookingStore();
   const navigate = useNavigate();
   const [editService, setEditService] = useState<Service | undefined>();
   const [editStylist, setEditStylist] = useState<Stylist | undefined>();

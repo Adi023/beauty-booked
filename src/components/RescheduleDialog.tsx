@@ -15,7 +15,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import type { UserBooking } from "@/stores/userStore";
+import type { SharedBooking } from "@/stores/bookingStore";
 
 const TIME_SLOTS = [
   "09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
@@ -24,7 +24,7 @@ const TIME_SLOTS = [
 ];
 
 interface RescheduleDialogProps {
-  booking: UserBooking | null;
+  booking: SharedBooking | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onConfirm: (bookingId: string, newDate: string, newTime: string) => void;

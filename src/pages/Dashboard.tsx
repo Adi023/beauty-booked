@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useUserStore, type UserBooking } from "@/stores/userStore";
+import { useUserStore } from "@/stores/userStore";
+import { useBookingStore, type SharedBooking } from "@/stores/bookingStore";
 import RescheduleDialog from "@/components/RescheduleDialog";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -32,7 +33,7 @@ function BookingCard({
   showRebook,
   showReschedule,
 }: {
-  booking: UserBooking;
+  booking: SharedBooking;
   onCancel?: () => void;
   onRebook?: () => void;
   onReschedule?: () => void;
@@ -110,13 +111,14 @@ function BookingCard({
 }
 
 export default function Dashboard() {
-  const { user, bookings, updateProfile, cancelBooking, rescheduleBooking, logout } = useUserStore();
+  const { user, updateProfile, logout } = useUserStore();
+  const { bookings: allBookings, cancelBooking, rescheduleBooking } = useBookingStore();
   const navigate = useNavigate();
   const [editing, setEditing] = useState(false);
   const [editName, setEditName] = useState(user?.name || "");
   const [editPhone, setEditPhone] = useState(user?.phone || "");
   const [rescheduleOpen, setRescheduleOpen] = useState(false);
-  const [rescheduleTarget, setRescheduleTarget] = useState<UserBooking | null>(null);
+  const [rescheduleTarget, setRescheduleTarget] = useState<SharedBooking | null>(null);
 
   if (!user) {
     navigate("/login");
@@ -124,6 +126,8 @@ export default function Dashboard() {
   }
 
   const today = new Date().toISOString().split("T")[0];
+  // Filter bookings for the current user
+  const bookings = allBookings.filter((b) => b.customerName === user.name);
   const upcoming = bookings.filter(
     (b) => b.status !== "cancelled" && b.status !== "completed" && isAfter(parseISO(b.date), new Date(today))
   );

@@ -8,6 +8,7 @@ import {
   createBooking,
 } from "@/services/api";
 import { useUserStore } from "@/stores/userStore";
+import { useBookingStore } from "@/stores/bookingStore";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -30,7 +31,8 @@ export default function Book() {
   const preselected = searchParams.get("service");
   const navigate = useNavigate();
 
-  const { isAuthenticated, user, addBooking } = useUserStore();
+  const { isAuthenticated, user } = useUserStore();
+  const { addBooking } = useBookingStore();
 
   const [step, setStep] = useState(preselected ? 1 : 0);
   const [serviceId, setServiceId] = useState(preselected || "");
@@ -77,16 +79,18 @@ export default function Book() {
     mutationFn: createBooking,
     onSuccess: () => {
       // Add booking to user store if logged in
-      if (isAuthenticated && selectedService && selectedStylist) {
+      if (isAuthenticated && selectedService && selectedStylist && user) {
         addBooking({
           id: crypto.randomUUID(),
+          customerName: user.name,
+          customerPhone: user.phone,
           serviceName: selectedService.name,
           stylistName: selectedStylist.name,
           date: format(selectedDate, "yyyy-MM-dd"),
           time: selectedTime,
           price: selectedService.price,
           duration: selectedService.duration,
-          status: "confirmed",
+          status: "pending",
         });
       }
 
