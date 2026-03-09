@@ -11,7 +11,6 @@ interface AdminState {
   isAuthenticated: boolean;
   services: Service[];
   stylists: Stylist[];
-  bookings: AdminBooking[];
   login: (username: string, password: string) => boolean;
   logout: () => void;
   addService: (service: Service) => void;
@@ -20,9 +19,6 @@ interface AdminState {
   addStylist: (stylist: Stylist) => void;
   updateStylist: (id: string, stylist: Partial<Stylist>) => void;
   deleteStylist: (id: string) => void;
-  confirmBooking: (id: string) => void;
-  cancelBooking: (id: string) => void;
-  completeBooking: (id: string) => void;
 }
 
 const INITIAL_SERVICES: Service[] = [
