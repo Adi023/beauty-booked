@@ -316,9 +316,139 @@ export default function AdminDashboard() {
       <div className="container py-8">
         <Tabs defaultValue="services">
           <TabsList className="mb-6">
+            <TabsTrigger value="bookings">Bookings</TabsTrigger>
             <TabsTrigger value="services">Services & Rates</TabsTrigger>
             <TabsTrigger value="experts">Experts</TabsTrigger>
           </TabsList>
+
+          {/* Bookings Tab */}
+          <TabsContent value="bookings">
+            <div className="mb-4">
+              <h2 className="font-serif text-xl font-semibold">
+                Bookings ({bookings.length})
+              </h2>
+            </div>
+
+            <div className="rounded-xl border border-border overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead className="bg-muted/50">
+                    <tr>
+                      <th className="text-left p-3 font-medium">Customer</th>
+                      <th className="text-left p-3 font-medium hidden sm:table-cell">Service</th>
+                      <th className="text-left p-3 font-medium hidden md:table-cell">Expert</th>
+                      <th className="text-left p-3 font-medium">Date & Time</th>
+                      <th className="text-right p-3 font-medium">Price</th>
+                      <th className="text-center p-3 font-medium">Status</th>
+                      <th className="text-right p-3 font-medium">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {bookings.map((b) => (
+                      <tr
+                        key={b.id}
+                        className="border-t border-border hover:bg-muted/30 transition-colors"
+                      >
+                        <td className="p-3">
+                          <div className="font-medium">{b.customerName}</div>
+                          <div className="text-xs text-muted-foreground">{b.customerPhone}</div>
+                        </td>
+                        <td className="p-3 hidden sm:table-cell">
+                          <div>{b.serviceName}</div>
+                          <div className="text-xs text-muted-foreground">{b.duration}min</div>
+                        </td>
+                        <td className="p-3 hidden md:table-cell">{b.stylistName}</td>
+                        <td className="p-3">
+                          <div>{b.date}</div>
+                          <div className="text-xs text-muted-foreground">{b.time}</div>
+                        </td>
+                        <td className="p-3 text-right font-semibold text-primary">₹{b.price}</td>
+                        <td className="p-3 text-center">
+                          <span
+                            className={`inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full font-medium ${
+                              b.status === "confirmed"
+                                ? "bg-green-500/10 text-green-600"
+                                : b.status === "pending"
+                                ? "bg-yellow-500/10 text-yellow-600"
+                                : b.status === "completed"
+                                ? "bg-blue-500/10 text-blue-600"
+                                : "bg-destructive/10 text-destructive"
+                            }`}
+                          >
+                            {b.status === "confirmed" && <CheckCircle2 className="w-3 h-3" />}
+                            {b.status === "pending" && <Clock className="w-3 h-3" />}
+                            {b.status === "completed" && <Check className="w-3 h-3" />}
+                            {b.status === "cancelled" && <Ban className="w-3 h-3" />}
+                            <span className="capitalize">{b.status}</span>
+                          </span>
+                        </td>
+                        <td className="p-3 text-right">
+                          <div className="flex items-center justify-end gap-1">
+                            {b.status === "pending" && (
+                              <>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-8 w-8 text-green-600"
+                                  title="Confirm"
+                                  onClick={() => {
+                                    confirmBooking(b.id);
+                                    toast.success("Booking confirmed");
+                                  }}
+                                >
+                                  <Check className="w-4 h-4" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-8 w-8 text-destructive"
+                                  title="Cancel"
+                                  onClick={() => {
+                                    adminCancelBooking(b.id);
+                                    toast.success("Booking cancelled");
+                                  }}
+                                >
+                                  <X className="w-4 h-4" />
+                                </Button>
+                              </>
+                            )}
+                            {b.status === "confirmed" && (
+                              <>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-8 w-8 text-blue-600"
+                                  title="Mark Completed"
+                                  onClick={() => {
+                                    completeBooking(b.id);
+                                    toast.success("Booking marked as completed");
+                                  }}
+                                >
+                                  <CheckCircle2 className="w-4 h-4" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-8 w-8 text-destructive"
+                                  title="Cancel"
+                                  onClick={() => {
+                                    adminCancelBooking(b.id);
+                                    toast.success("Booking cancelled");
+                                  }}
+                                >
+                                  <X className="w-4 h-4" />
+                                </Button>
+                              </>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </TabsContent>
 
           {/* Services Tab */}
           <TabsContent value="services">
