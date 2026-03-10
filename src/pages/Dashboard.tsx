@@ -6,7 +6,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useUserStore } from "@/stores/userStore";
 import { useBookingStore, type SharedBooking } from "@/stores/bookingStore";
+import { useReviewStore } from "@/stores/reviewStore";
 import RescheduleDialog from "@/components/RescheduleDialog";
+import ReviewDialog from "@/components/ReviewDialog";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import {
@@ -21,6 +23,8 @@ import {
   ChevronRight,
   RotateCcw,
   CalendarClock,
+  Star,
+  MessageSquare,
 } from "lucide-react";
 import { format, parseISO, isAfter } from "date-fns";
 
@@ -29,17 +33,21 @@ function BookingCard({
   onCancel,
   onRebook,
   onReschedule,
+  onReview,
   showCancel,
   showRebook,
   showReschedule,
+  showReview,
 }: {
   booking: SharedBooking;
   onCancel?: () => void;
   onRebook?: () => void;
   onReschedule?: () => void;
+  onReview?: () => void;
   showCancel?: boolean;
   showRebook?: boolean;
   showReschedule?: boolean;
+  showReview?: boolean;
 }) {
   const statusColors: Record<string, string> = {
     confirmed: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
@@ -104,6 +112,16 @@ function BookingCard({
               <RotateCcw className="w-3.5 h-3.5" /> Rebook
             </Button>
           )}
+          {showReview && booking.status === "completed" && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="rounded-full gap-1 font-sans text-[hsl(var(--gold))] border-[hsl(var(--gold))]/30 hover:bg-[hsl(var(--gold))]/10"
+              onClick={onReview}
+            >
+              <Star className="w-3.5 h-3.5" /> Review
+            </Button>
+          )}
         </div>
       </CardContent>
     </Card>
@@ -113,20 +131,25 @@ function BookingCard({
 export default function Dashboard() {
   const { user, updateProfile, logout } = useUserStore();
   const { bookings: allBookings, cancelBooking, rescheduleBooking } = useBookingStore();
+  const reviews = useReviewStore((s) => s.reviews);
   const navigate = useNavigate();
   const [editing, setEditing] = useState(false);
   const [editName, setEditName] = useState(user?.name || "");
   const [editPhone, setEditPhone] = useState(user?.phone || "");
   const [rescheduleOpen, setRescheduleOpen] = useState(false);
   const [rescheduleTarget, setRescheduleTarget] = useState<SharedBooking | null>(null);
+  const [reviewOpen, setReviewOpen] = useState(false);
+  const [reviewTarget, setReviewTarget] = useState<SharedBooking | null>(null);
 
   if (!user) {
     navigate("/login");
     return null;
   }
 
+  const userReviews = reviews.filter((r) => r.customerName === user.name);
+  const reviewedBookingIds = new Set(userReviews.map((r) => r.bookingId));
+
   const today = new Date().toISOString().split("T")[0];
-  // Filter bookings for the current user
   const bookings = allBookings.filter((b) => b.customerName === user.name);
   const upcoming = bookings.filter(
     (b) => b.status !== "cancelled" && b.status !== "completed" && isAfter(parseISO(b.date), new Date(today))
@@ -180,6 +203,9 @@ export default function Dashboard() {
               </TabsTrigger>
               <TabsTrigger value="history" className="flex-1 rounded-lg font-sans gap-1.5 text-sm">
                 <History className="w-4 h-4" /> History
+              </TabsTrigger>
+              <TabsTrigger value="reviews" className="flex-1 rounded-lg font-sans gap-1.5 text-sm">
+                <Star className="w-4 h-4" /> Reviews
               </TabsTrigger>
               <TabsTrigger value="profile" className="flex-1 rounded-lg font-sans gap-1.5 text-sm">
                 <User className="w-4 h-4" /> Profile
@@ -236,8 +262,73 @@ export default function Dashboard() {
                       key={b.id}
                       booking={b}
                       showRebook
+                      showReview={!reviewedBookingIds.has(b.id)}
                       onRebook={() => navigate(`/book?service=${encodeURIComponent(b.serviceName)}`)}
+                      onReview={() => {
+                        setReviewTarget(b);
+                        setReviewOpen(true);
+                      }}
                     />
+                  ))
+                )}
+              </div>
+            </TabsContent>
+
+            {/* Reviews */}
+            <TabsContent value="reviews">
+              <div className="space-y-3">
+                {userReviews.length === 0 ? (
+                  <Card>
+                    <CardContent className="p-8 text-center">
+                      <MessageSquare className="w-10 h-10 mx-auto text-muted-foreground/40 mb-3" />
+                      <p className="text-muted-foreground font-sans">No reviews yet</p>
+                      <p className="text-xs text-muted-foreground mt-1">Complete a booking to leave a review</p>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  userReviews.map((review) => (
+                    <Card key={review.id}>
+                      <CardContent className="p-4">
+                        <div className="flex items-start justify-between gap-3 mb-2">
+                          <div>
+                            <h4 className="font-serif font-semibold">{review.serviceName}</h4>
+                            <p className="text-sm text-muted-foreground">with {review.stylistName}</p>
+                          </div>
+                          <div className="flex gap-0.5">
+                            {[1, 2, 3, 4, 5].map((s) => (
+                              <Star
+                                key={s}
+                                className={`w-4 h-4 ${
+                                  s <= review.rating
+                                    ? "fill-[hsl(var(--gold))] text-[hsl(var(--gold))]"
+                                    : "text-muted-foreground/20"
+                                }`}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                        <p className="text-sm leading-relaxed">{review.comment}</p>
+                        {(review.beforePhoto || review.afterPhoto) && (
+                          <div className="grid grid-cols-2 gap-2 mt-3">
+                            {review.beforePhoto && (
+                              <div className="relative rounded-lg overflow-hidden aspect-square bg-muted">
+                                <img src={review.beforePhoto} alt="Before" className="w-full h-full object-cover" />
+                                <span className="absolute bottom-1 left-1 text-[10px] bg-background/80 px-1.5 py-0.5 rounded-full font-medium">Before</span>
+                              </div>
+                            )}
+                            {review.afterPhoto && (
+                              <div className="relative rounded-lg overflow-hidden aspect-square bg-muted">
+                                <img src={review.afterPhoto} alt="After" className="w-full h-full object-cover" />
+                                <span className="absolute bottom-1 left-1 text-[10px] bg-background/80 px-1.5 py-0.5 rounded-full font-medium">After</span>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                        <p className="text-xs text-muted-foreground mt-2">
+                          {format(parseISO(review.createdAt), "MMM d, yyyy")}
+                        </p>
+                      </CardContent>
+                    </Card>
                   ))
                 )}
               </div>
@@ -321,6 +412,11 @@ export default function Dashboard() {
           open={rescheduleOpen}
           onOpenChange={setRescheduleOpen}
           onConfirm={handleReschedule}
+        />
+        <ReviewDialog
+          booking={reviewTarget}
+          open={reviewOpen}
+          onOpenChange={setReviewOpen}
         />
       </div>
     </main>
