@@ -247,7 +247,7 @@ export default function AdminDashboard() {
     cancelBooking: adminCancelBooking,
     completeBooking,
   } = useBookingStore();
-  const navigate = useNavigate();
+  const { reviews, deleteReview } = useReviewStore();
   const [editService, setEditService] = useState<Service | undefined>();
   const [editStylist, setEditStylist] = useState<Stylist | undefined>();
   const [serviceDialogOpen, setServiceDialogOpen] = useState(false);
