@@ -204,6 +204,9 @@ export default function Dashboard() {
               <TabsTrigger value="history" className="flex-1 rounded-lg font-sans gap-1.5 text-sm">
                 <History className="w-4 h-4" /> History
               </TabsTrigger>
+              <TabsTrigger value="reviews" className="flex-1 rounded-lg font-sans gap-1.5 text-sm">
+                <Star className="w-4 h-4" /> Reviews
+              </TabsTrigger>
               <TabsTrigger value="profile" className="flex-1 rounded-lg font-sans gap-1.5 text-sm">
                 <User className="w-4 h-4" /> Profile
               </TabsTrigger>
