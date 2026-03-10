@@ -6,7 +6,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useUserStore } from "@/stores/userStore";
 import { useBookingStore, type SharedBooking } from "@/stores/bookingStore";
+import { useReviewStore } from "@/stores/reviewStore";
 import RescheduleDialog from "@/components/RescheduleDialog";
+import ReviewDialog from "@/components/ReviewDialog";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import {
@@ -21,6 +23,8 @@ import {
   ChevronRight,
   RotateCcw,
   CalendarClock,
+  Star,
+  MessageSquare,
 } from "lucide-react";
 import { format, parseISO, isAfter } from "date-fns";
 
