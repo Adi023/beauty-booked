@@ -413,6 +413,10 @@ export default function Dashboard() {
           onOpenChange={setRescheduleOpen}
           onConfirm={handleReschedule}
         />
+        <ReviewDialog
+          booking={reviewTarget}
+          open={reviewOpen}
+          onOpenChange={setReviewOpen}
       </div>
     </main>
   );
