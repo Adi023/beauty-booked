@@ -146,8 +146,10 @@ export default function Dashboard() {
     return null;
   }
 
+  const userReviews = reviews.filter((r) => r.customerName === user.name);
+  const reviewedBookingIds = new Set(userReviews.map((r) => r.bookingId));
+
   const today = new Date().toISOString().split("T")[0];
-  // Filter bookings for the current user
   const bookings = allBookings.filter((b) => b.customerName === user.name);
   const upcoming = bookings.filter(
     (b) => b.status !== "cancelled" && b.status !== "completed" && isAfter(parseISO(b.date), new Date(today))
