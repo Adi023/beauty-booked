@@ -21,7 +21,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Plus, Pencil, Trash2, LogOut, Check, X, CheckCircle2, Clock, Ban } from "lucide-react";
+import { Plus, Pencil, Trash2, LogOut, Check, X, CheckCircle2, Clock, Ban, Star, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
 import type { Service, Stylist, ServiceCategory } from "@/types/salon";
 import logoMs from "@/assets/logo-ms.png";
