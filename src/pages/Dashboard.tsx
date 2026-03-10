@@ -262,8 +262,73 @@ export default function Dashboard() {
                       key={b.id}
                       booking={b}
                       showRebook
+                      showReview={!reviewedBookingIds.has(b.id)}
                       onRebook={() => navigate(`/book?service=${encodeURIComponent(b.serviceName)}`)}
+                      onReview={() => {
+                        setReviewTarget(b);
+                        setReviewOpen(true);
+                      }}
                     />
+                  ))
+                )}
+              </div>
+            </TabsContent>
+
+            {/* Reviews */}
+            <TabsContent value="reviews">
+              <div className="space-y-3">
+                {userReviews.length === 0 ? (
+                  <Card>
+                    <CardContent className="p-8 text-center">
+                      <MessageSquare className="w-10 h-10 mx-auto text-muted-foreground/40 mb-3" />
+                      <p className="text-muted-foreground font-sans">No reviews yet</p>
+                      <p className="text-xs text-muted-foreground mt-1">Complete a booking to leave a review</p>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  userReviews.map((review) => (
+                    <Card key={review.id}>
+                      <CardContent className="p-4">
+                        <div className="flex items-start justify-between gap-3 mb-2">
+                          <div>
+                            <h4 className="font-serif font-semibold">{review.serviceName}</h4>
+                            <p className="text-sm text-muted-foreground">with {review.stylistName}</p>
+                          </div>
+                          <div className="flex gap-0.5">
+                            {[1, 2, 3, 4, 5].map((s) => (
+                              <Star
+                                key={s}
+                                className={`w-4 h-4 ${
+                                  s <= review.rating
+                                    ? "fill-[hsl(var(--gold))] text-[hsl(var(--gold))]"
+                                    : "text-muted-foreground/20"
+                                }`}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                        <p className="text-sm leading-relaxed">{review.comment}</p>
+                        {(review.beforePhoto || review.afterPhoto) && (
+                          <div className="grid grid-cols-2 gap-2 mt-3">
+                            {review.beforePhoto && (
+                              <div className="relative rounded-lg overflow-hidden aspect-square bg-muted">
+                                <img src={review.beforePhoto} alt="Before" className="w-full h-full object-cover" />
+                                <span className="absolute bottom-1 left-1 text-[10px] bg-background/80 px-1.5 py-0.5 rounded-full font-medium">Before</span>
+                              </div>
+                            )}
+                            {review.afterPhoto && (
+                              <div className="relative rounded-lg overflow-hidden aspect-square bg-muted">
+                                <img src={review.afterPhoto} alt="After" className="w-full h-full object-cover" />
+                                <span className="absolute bottom-1 left-1 text-[10px] bg-background/80 px-1.5 py-0.5 rounded-full font-medium">After</span>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                        <p className="text-xs text-muted-foreground mt-2">
+                          {format(parseISO(review.createdAt), "MMM d, yyyy")}
+                        </p>
+                      </CardContent>
+                    </Card>
                   ))
                 )}
               </div>
