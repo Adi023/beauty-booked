@@ -455,7 +455,92 @@ export default function AdminDashboard() {
             </div>
           </TabsContent>
 
-          {/* Services Tab */}
+          {/* Reviews Tab */}
+          <TabsContent value="reviews">
+            <div className="mb-4">
+              <h2 className="font-serif text-xl font-semibold">
+                Reviews ({reviews.length})
+              </h2>
+              <p className="text-sm text-muted-foreground mt-1">
+                Moderate customer reviews and ratings
+              </p>
+            </div>
+
+            {reviews.length === 0 ? (
+              <div className="rounded-xl border border-border p-8 text-center">
+                <MessageSquare className="w-10 h-10 mx-auto text-muted-foreground/40 mb-3" />
+                <p className="text-muted-foreground">No reviews yet</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {reviews.map((review) => (
+                  <div
+                    key={review.id}
+                    className="bg-card border border-border rounded-xl p-5"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <h4 className="font-serif font-semibold">{review.customerName}</h4>
+                          <span className="text-xs text-muted-foreground">·</span>
+                          <span className="text-xs text-muted-foreground">{review.createdAt}</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground mt-0.5">
+                          {review.serviceName} with {review.stylistName}
+                        </p>
+                        <div className="flex gap-0.5 mt-2">
+                          {[1, 2, 3, 4, 5].map((s) => (
+                            <Star
+                              key={s}
+                              className={`w-4 h-4 ${
+                                s <= review.rating
+                                  ? "fill-[hsl(var(--gold))] text-[hsl(var(--gold))]"
+                                  : "text-muted-foreground/20"
+                              }`}
+                            />
+                          ))}
+                          <span className="text-xs text-muted-foreground ml-1">
+                            ({review.rating}/5)
+                          </span>
+                        </div>
+                        <p className="text-sm mt-3 leading-relaxed">{review.comment}</p>
+
+                        {(review.beforePhoto || review.afterPhoto) && (
+                          <div className="flex gap-3 mt-3">
+                            {review.beforePhoto && (
+                              <div className="relative rounded-lg overflow-hidden w-24 h-24 bg-muted shrink-0">
+                                <img src={review.beforePhoto} alt="Before" className="w-full h-full object-cover" />
+                                <span className="absolute bottom-0.5 left-0.5 text-[9px] bg-background/80 px-1 py-0.5 rounded-full font-medium">Before</span>
+                              </div>
+                            )}
+                            {review.afterPhoto && (
+                              <div className="relative rounded-lg overflow-hidden w-24 h-24 bg-muted shrink-0">
+                                <img src={review.afterPhoto} alt="After" className="w-full h-full object-cover" />
+                                <span className="absolute bottom-0.5 left-0.5 text-[9px] bg-background/80 px-1 py-0.5 rounded-full font-medium">After</span>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-destructive shrink-0"
+                        title="Delete review"
+                        onClick={() => {
+                          deleteReview(review.id);
+                          toast.success("Review deleted");
+                        }}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </TabsContent>
           <TabsContent value="services">
             <div className="flex items-center justify-between mb-4">
               <h2 className="font-serif text-xl font-semibold">
