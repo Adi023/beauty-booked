@@ -41,9 +41,11 @@ function BookingCard({
   onCancel?: () => void;
   onRebook?: () => void;
   onReschedule?: () => void;
+  onReview?: () => void;
   showCancel?: boolean;
   showRebook?: boolean;
   showReschedule?: boolean;
+  showReview?: boolean;
 }) {
   const statusColors: Record<string, string> = {
     confirmed: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
