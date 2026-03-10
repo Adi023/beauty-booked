@@ -129,12 +129,15 @@ function BookingCard({
 export default function Dashboard() {
   const { user, updateProfile, logout } = useUserStore();
   const { bookings: allBookings, cancelBooking, rescheduleBooking } = useBookingStore();
+  const reviews = useReviewStore((s) => s.reviews);
   const navigate = useNavigate();
   const [editing, setEditing] = useState(false);
   const [editName, setEditName] = useState(user?.name || "");
   const [editPhone, setEditPhone] = useState(user?.phone || "");
   const [rescheduleOpen, setRescheduleOpen] = useState(false);
   const [rescheduleTarget, setRescheduleTarget] = useState<SharedBooking | null>(null);
+  const [reviewOpen, setReviewOpen] = useState(false);
+  const [reviewTarget, setReviewTarget] = useState<SharedBooking | null>(null);
 
   if (!user) {
     navigate("/login");
