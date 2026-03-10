@@ -46,4 +46,6 @@ export const useReviewStore = create<ReviewState>((set) => ({
   reviews: INITIAL_REVIEWS,
   addReview: (review) =>
     set((state) => ({ reviews: [review, ...state.reviews] })),
+  deleteReview: (id) =>
+    set((state) => ({ reviews: state.reviews.filter((r) => r.id !== id) })),
 }));
