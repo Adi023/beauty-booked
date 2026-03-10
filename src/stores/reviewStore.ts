@@ -16,6 +16,7 @@ export interface Review {
 interface ReviewState {
   reviews: Review[];
   addReview: (review: Review) => void;
+  deleteReview: (id: string) => void;
 }
 
 const INITIAL_REVIEWS: Review[] = [
