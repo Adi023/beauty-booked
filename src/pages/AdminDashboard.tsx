@@ -321,6 +321,7 @@ export default function AdminDashboard() {
         <Tabs defaultValue="bookings">
           <TabsList className="mb-6">
             <TabsTrigger value="bookings">Bookings</TabsTrigger>
+            <TabsTrigger value="reviews">Reviews</TabsTrigger>
             <TabsTrigger value="services">Services & Rates</TabsTrigger>
             <TabsTrigger value="experts">Experts</TabsTrigger>
           </TabsList>
