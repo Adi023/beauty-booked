@@ -33,9 +33,11 @@ function BookingCard({
   onCancel,
   onRebook,
   onReschedule,
+  onReview,
   showCancel,
   showRebook,
   showReschedule,
+  showReview,
 }: {
   booking: SharedBooking;
   onCancel?: () => void;
