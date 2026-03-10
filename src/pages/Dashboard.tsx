@@ -110,6 +110,16 @@ function BookingCard({
               <RotateCcw className="w-3.5 h-3.5" /> Rebook
             </Button>
           )}
+          {showReview && booking.status === "completed" && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="rounded-full gap-1 font-sans text-[hsl(var(--gold))] border-[hsl(var(--gold))]/30 hover:bg-[hsl(var(--gold))]/10"
+              onClick={onReview}
+            >
+              <Star className="w-3.5 h-3.5" /> Review
+            </Button>
+          )}
         </div>
       </CardContent>
     </Card>
