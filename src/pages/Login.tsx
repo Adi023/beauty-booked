@@ -54,9 +54,22 @@ export default function Login() {
         className="w-full max-w-md px-4"
       >
         <div className="text-center mb-8">
-          <img src={logoMs} alt="MS Salon" className="w-16 h-16 rounded-xl mx-auto mb-4 object-cover" />
+          <img
+            src={logoMs}
+            alt="MS Salon"
+            onClick={() => navigate("/")}
+            className="w-16 h-16 rounded-xl mx-auto mb-4 object-cover"
+          />
           <h1 className="font-serif text-2xl font-bold">Welcome Back</h1>
-          <p className="text-muted-foreground text-sm mt-1">Sign in to your account</p>
+          <p className="text-muted-foreground text-sm mt-1">
+            Sign in to your account
+          </p>
+          <a
+            className="text-sm text-muted-foreground mt-1 cursor-pointer"
+            onClick={() => navigate("/")}
+          >
+            Go to Store
+          </a>
         </div>
 
         <Card>
@@ -70,7 +83,7 @@ export default function Login() {
                   "flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium transition-all",
                   role === "user"
                     ? "bg-background text-foreground shadow-sm"
-                    : "text-muted-foreground hover:text-foreground"
+                    : "text-muted-foreground hover:text-foreground",
                 )}
               >
                 <User className="w-4 h-4" /> Customer
@@ -82,7 +95,7 @@ export default function Login() {
                   "flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium transition-all",
                   role === "admin"
                     ? "bg-background text-foreground shadow-sm"
-                    : "text-muted-foreground hover:text-foreground"
+                    : "text-muted-foreground hover:text-foreground",
                 )}
               >
                 <ShieldCheck className="w-4 h-4" /> Admin
@@ -103,7 +116,9 @@ export default function Login() {
                 />
               </div>
               <div>
-                <label className="text-sm font-medium mb-1.5 block">Password</label>
+                <label className="text-sm font-medium mb-1.5 block">
+                  Password
+                </label>
                 <div className="relative">
                   <Input
                     type={showPw ? "text" : "password"}
@@ -117,11 +132,18 @@ export default function Login() {
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                     onClick={() => setShowPw(!showPw)}
                   >
-                    {showPw ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    {showPw ? (
+                      <EyeOff className="w-4 h-4" />
+                    ) : (
+                      <Eye className="w-4 h-4" />
+                    )}
                   </button>
                 </div>
               </div>
-              <Button type="submit" className="w-full rounded-full font-sans gap-2">
+              <Button
+                type="submit"
+                className="w-full rounded-full font-sans gap-2"
+              >
                 <LogIn className="w-4 h-4" /> Sign In
               </Button>
             </form>
@@ -129,7 +151,10 @@ export default function Login() {
             {role === "user" && (
               <div className="mt-4 text-center text-sm text-muted-foreground">
                 Don't have an account?{" "}
-                <Link to="/signup" className="text-primary font-medium hover:underline">
+                <Link
+                  to="/signup"
+                  className="text-primary font-medium hover:underline"
+                >
                   Sign Up
                 </Link>
               </div>
@@ -137,9 +162,15 @@ export default function Login() {
 
             <div className="mt-3 p-3 rounded-lg bg-muted text-xs text-muted-foreground text-center">
               {role === "admin" ? (
-                <>Demo: <span className="font-mono">admin</span> / <span className="font-mono">admin123</span></>
+                <>
+                  Demo: <span className="font-mono">admin</span> /{" "}
+                  <span className="font-mono">admin123</span>
+                </>
               ) : (
-                <>Demo: <span className="font-mono">priya@example.com</span> / <span className="font-mono">password123</span></>
+                <>
+                  Demo: <span className="font-mono">priya@example.com</span> /{" "}
+                  <span className="font-mono">password123</span>
+                </>
               )}
             </div>
           </CardContent>

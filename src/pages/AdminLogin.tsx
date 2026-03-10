@@ -38,12 +38,12 @@ export default function AdminLogin() {
           <p className="text-sm text-muted-foreground mt-1">
             MS Salon & Academy
           </p>
-          {/* <a
+          <a
             className="text-sm text-muted-foreground mt-1 cursor-pointer"
             onClick={() => navigate("/")}
           >
             Go to Store
-          </a> */}
+          </a>
           <Link to="/">
             <Button variant="ghost" size="sm" className="gap-1 text-sm">
               <Home className="w-4 h-4" /> Site

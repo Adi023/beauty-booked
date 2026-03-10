@@ -21,7 +21,19 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Plus, Pencil, Trash2, LogOut, Check, X, CheckCircle2, Clock, Ban, Star, MessageSquare } from "lucide-react";
+import {
+  Plus,
+  Pencil,
+  Trash2,
+  LogOut,
+  Check,
+  X,
+  CheckCircle2,
+  Clock,
+  Ban,
+  Star,
+  MessageSquare,
+} from "lucide-react";
 import { toast } from "sonner";
 import type { Service, Stylist, ServiceCategory } from "@/types/salon";
 import logoMs from "@/assets/logo-ms.png";
@@ -309,7 +321,7 @@ export default function AdminDashboard() {
               className="gap-1 text-sm text-destructive"
               onClick={() => {
                 logout();
-                navigate("/admin/login");
+                navigate("/login");
               }}
             >
               <LogOut className="w-4 h-4" /> Logout
@@ -341,8 +353,12 @@ export default function AdminDashboard() {
                   <thead className="bg-muted/50">
                     <tr>
                       <th className="text-left p-3 font-medium">Customer</th>
-                      <th className="text-left p-3 font-medium hidden sm:table-cell">Service</th>
-                      <th className="text-left p-3 font-medium hidden md:table-cell">Expert</th>
+                      <th className="text-left p-3 font-medium hidden sm:table-cell">
+                        Service
+                      </th>
+                      <th className="text-left p-3 font-medium hidden md:table-cell">
+                        Expert
+                      </th>
                       <th className="text-left p-3 font-medium">Date & Time</th>
                       <th className="text-right p-3 font-medium">Price</th>
                       <th className="text-center p-3 font-medium">Status</th>
@@ -357,34 +373,52 @@ export default function AdminDashboard() {
                       >
                         <td className="p-3">
                           <div className="font-medium">{b.customerName}</div>
-                          <div className="text-xs text-muted-foreground">{b.customerPhone}</div>
+                          <div className="text-xs text-muted-foreground">
+                            {b.customerPhone}
+                          </div>
                         </td>
                         <td className="p-3 hidden sm:table-cell">
                           <div>{b.serviceName}</div>
-                          <div className="text-xs text-muted-foreground">{b.duration}min</div>
+                          <div className="text-xs text-muted-foreground">
+                            {b.duration}min
+                          </div>
                         </td>
-                        <td className="p-3 hidden md:table-cell">{b.stylistName}</td>
+                        <td className="p-3 hidden md:table-cell">
+                          {b.stylistName}
+                        </td>
                         <td className="p-3">
                           <div>{b.date}</div>
-                          <div className="text-xs text-muted-foreground">{b.time}</div>
+                          <div className="text-xs text-muted-foreground">
+                            {b.time}
+                          </div>
                         </td>
-                        <td className="p-3 text-right font-semibold text-primary">₹{b.price}</td>
+                        <td className="p-3 text-right font-semibold text-primary">
+                          ₹{b.price}
+                        </td>
                         <td className="p-3 text-center">
                           <span
                             className={`inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full font-medium ${
                               b.status === "confirmed"
                                 ? "bg-green-500/10 text-green-600"
                                 : b.status === "pending"
-                                ? "bg-yellow-500/10 text-yellow-600"
-                                : b.status === "completed"
-                                ? "bg-blue-500/10 text-blue-600"
-                                : "bg-destructive/10 text-destructive"
+                                  ? "bg-yellow-500/10 text-yellow-600"
+                                  : b.status === "completed"
+                                    ? "bg-blue-500/10 text-blue-600"
+                                    : "bg-destructive/10 text-destructive"
                             }`}
                           >
-                            {b.status === "confirmed" && <CheckCircle2 className="w-3 h-3" />}
-                            {b.status === "pending" && <Clock className="w-3 h-3" />}
-                            {b.status === "completed" && <Check className="w-3 h-3" />}
-                            {b.status === "cancelled" && <Ban className="w-3 h-3" />}
+                            {b.status === "confirmed" && (
+                              <CheckCircle2 className="w-3 h-3" />
+                            )}
+                            {b.status === "pending" && (
+                              <Clock className="w-3 h-3" />
+                            )}
+                            {b.status === "completed" && (
+                              <Check className="w-3 h-3" />
+                            )}
+                            {b.status === "cancelled" && (
+                              <Ban className="w-3 h-3" />
+                            )}
                             <span className="capitalize">{b.status}</span>
                           </span>
                         </td>
@@ -427,7 +461,9 @@ export default function AdminDashboard() {
                                   title="Mark Completed"
                                   onClick={() => {
                                     completeBooking(b.id);
-                                    toast.success("Booking marked as completed");
+                                    toast.success(
+                                      "Booking marked as completed",
+                                    );
                                   }}
                                 >
                                   <CheckCircle2 className="w-4 h-4" />
@@ -482,9 +518,15 @@ export default function AdminDashboard() {
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <h4 className="font-serif font-semibold">{review.customerName}</h4>
-                          <span className="text-xs text-muted-foreground">·</span>
-                          <span className="text-xs text-muted-foreground">{review.createdAt}</span>
+                          <h4 className="font-serif font-semibold">
+                            {review.customerName}
+                          </h4>
+                          <span className="text-xs text-muted-foreground">
+                            ·
+                          </span>
+                          <span className="text-xs text-muted-foreground">
+                            {review.createdAt}
+                          </span>
                         </div>
                         <p className="text-sm text-muted-foreground mt-0.5">
                           {review.serviceName} with {review.stylistName}
@@ -504,20 +546,34 @@ export default function AdminDashboard() {
                             ({review.rating}/5)
                           </span>
                         </div>
-                        <p className="text-sm mt-3 leading-relaxed">{review.comment}</p>
+                        <p className="text-sm mt-3 leading-relaxed">
+                          {review.comment}
+                        </p>
 
                         {(review.beforePhoto || review.afterPhoto) && (
                           <div className="flex gap-3 mt-3">
                             {review.beforePhoto && (
                               <div className="relative rounded-lg overflow-hidden w-24 h-24 bg-muted shrink-0">
-                                <img src={review.beforePhoto} alt="Before" className="w-full h-full object-cover" />
-                                <span className="absolute bottom-0.5 left-0.5 text-[9px] bg-background/80 px-1 py-0.5 rounded-full font-medium">Before</span>
+                                <img
+                                  src={review.beforePhoto}
+                                  alt="Before"
+                                  className="w-full h-full object-cover"
+                                />
+                                <span className="absolute bottom-0.5 left-0.5 text-[9px] bg-background/80 px-1 py-0.5 rounded-full font-medium">
+                                  Before
+                                </span>
                               </div>
                             )}
                             {review.afterPhoto && (
                               <div className="relative rounded-lg overflow-hidden w-24 h-24 bg-muted shrink-0">
-                                <img src={review.afterPhoto} alt="After" className="w-full h-full object-cover" />
-                                <span className="absolute bottom-0.5 left-0.5 text-[9px] bg-background/80 px-1 py-0.5 rounded-full font-medium">After</span>
+                                <img
+                                  src={review.afterPhoto}
+                                  alt="After"
+                                  className="w-full h-full object-cover"
+                                />
+                                <span className="absolute bottom-0.5 left-0.5 text-[9px] bg-background/80 px-1 py-0.5 rounded-full font-medium">
+                                  After
+                                </span>
                               </div>
                             )}
                           </div>
