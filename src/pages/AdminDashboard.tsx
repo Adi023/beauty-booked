@@ -248,6 +248,7 @@ export default function AdminDashboard() {
     completeBooking,
   } = useBookingStore();
   const { reviews, deleteReview } = useReviewStore();
+  const navigate = useNavigate();
   const [editService, setEditService] = useState<Service | undefined>();
   const [editStylist, setEditStylist] = useState<Stylist | undefined>();
   const [serviceDialogOpen, setServiceDialogOpen] = useState(false);
