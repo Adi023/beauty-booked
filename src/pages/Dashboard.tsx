@@ -417,6 +417,7 @@ export default function Dashboard() {
           booking={reviewTarget}
           open={reviewOpen}
           onOpenChange={setReviewOpen}
+        />
       </div>
     </main>
   );
