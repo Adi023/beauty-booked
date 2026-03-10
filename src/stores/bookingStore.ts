@@ -99,6 +99,18 @@ const INITIAL_BOOKINGS: SharedBooking[] = [
     duration: 45,
     status: "cancelled",
   },
+  {
+    id: "ab7",
+    customerName: "Priya Sharma",
+    customerPhone: "+91 98765 43210",
+    serviceName: "Hair Spa Treatment",
+    stylistName: "Marcus Chen",
+    date: "2026-02-10",
+    time: "13:00",
+    price: 850,
+    duration: 60,
+    status: "completed",
+  },
 ];
 
 export const useBookingStore = create<BookingState>((set) => ({
