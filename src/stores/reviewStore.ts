@@ -33,6 +33,8 @@ const INITIAL_REVIEWS: Review[] = [
     bookingId: "ab4",
     rating: 5,
     comment: "Amazing experience! My skin felt so refreshed and glowing after the session.",
+    beforePhoto: skinAfter,
+    afterPhoto: skinAfter,
     createdAt: "2026-02-21",
   },
   {
