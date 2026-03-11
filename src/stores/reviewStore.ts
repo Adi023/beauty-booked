@@ -1,4 +1,9 @@
 import { create } from "zustand";
+import hairBefore from "@/assets/gallery/hair-before.jpg";
+import hairAfter from "@/assets/gallery/hair-after.jpg";
+import nailsBefore from "@/assets/gallery/nails-before.jpg";
+import nailsAfter from "@/assets/gallery/nails-after.jpg";
+import skinAfter from "@/assets/gallery/skin-after.jpg";
 
 export interface Review {
   id: string;
@@ -8,8 +13,8 @@ export interface Review {
   bookingId: string;
   rating: number; // 1-5
   comment: string;
-  beforePhoto?: string; // data URL
-  afterPhoto?: string;  // data URL
+  beforePhoto?: string;
+  afterPhoto?: string;
   createdAt: string;
 }
 
@@ -28,6 +33,8 @@ const INITIAL_REVIEWS: Review[] = [
     bookingId: "ab4",
     rating: 5,
     comment: "Amazing experience! My skin felt so refreshed and glowing after the session.",
+    beforePhoto: skinAfter,
+    afterPhoto: skinAfter,
     createdAt: "2026-02-21",
   },
   {
@@ -58,6 +65,8 @@ const INITIAL_REVIEWS: Review[] = [
     bookingId: "ab9",
     rating: 5,
     comment: "Perfect nails every time. Aisha is incredibly talented and detail-oriented.",
+    beforePhoto: nailsBefore,
+    afterPhoto: nailsAfter,
     createdAt: "2026-03-01",
   },
   {
@@ -78,6 +87,8 @@ const INITIAL_REVIEWS: Review[] = [
     bookingId: "ab11",
     rating: 5,
     comment: "Silky smooth hair for months! Marcus really knows his craft.",
+    beforePhoto: hairBefore,
+    afterPhoto: hairAfter,
     createdAt: "2026-03-05",
   },
 ];
