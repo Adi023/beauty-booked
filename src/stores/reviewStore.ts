@@ -65,6 +65,8 @@ const INITIAL_REVIEWS: Review[] = [
     bookingId: "ab9",
     rating: 5,
     comment: "Perfect nails every time. Aisha is incredibly talented and detail-oriented.",
+    beforePhoto: nailsBefore,
+    afterPhoto: nailsAfter,
     createdAt: "2026-03-01",
   },
   {
