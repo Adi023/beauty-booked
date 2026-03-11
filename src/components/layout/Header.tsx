@@ -10,6 +10,7 @@ import logoMs from "@/assets/logo-ms.png";
 const NAV_ITEMS = [
   { label: "Home", path: "/" },
   { label: "Services", path: "/services" },
+  { label: "Gallery", path: "/gallery" },
   { label: "Book Now", path: "/book" },
 ];
 
