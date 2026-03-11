@@ -87,6 +87,8 @@ const INITIAL_REVIEWS: Review[] = [
     bookingId: "ab11",
     rating: 5,
     comment: "Silky smooth hair for months! Marcus really knows his craft.",
+    beforePhoto: hairBefore,
+    afterPhoto: hairAfter,
     createdAt: "2026-03-05",
   },
 ];
