@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, User, LogIn } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
@@ -51,6 +52,8 @@ export default function Header() {
               </Button>
             </Link>
           ))}
+
+          <ThemeToggle />
 
           {isAuthenticated ? (
             <Link to="/dashboard">
