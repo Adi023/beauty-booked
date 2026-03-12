@@ -34,12 +34,14 @@ import {
   Star,
   MessageSquare,
   BarChart3,
+  FileText,
 } from "lucide-react";
 import { toast } from "sonner";
 import type { Service, Stylist, ServiceCategory } from "@/types/salon";
 import logoMs from "@/assets/logo-ms.png";
 import { Link } from "react-router-dom";
 import AnalyticsTab from "@/components/admin/AnalyticsTab";
+import ReportsTab from "@/components/admin/ReportsTab";
 
 const CATEGORIES: ServiceCategory[] = [
   "hair",
@@ -338,6 +340,9 @@ export default function AdminDashboard() {
             <TabsTrigger value="analytics" className="gap-1.5">
               <BarChart3 className="w-3.5 h-3.5" /> Analytics
             </TabsTrigger>
+            <TabsTrigger value="reports" className="gap-1.5">
+              <FileText className="w-3.5 h-3.5" /> Reports
+            </TabsTrigger>
             <TabsTrigger value="bookings">Bookings</TabsTrigger>
             <TabsTrigger value="reviews">Reviews</TabsTrigger>
             <TabsTrigger value="services">Services & Rates</TabsTrigger>
@@ -347,6 +352,10 @@ export default function AdminDashboard() {
           {/* Analytics Tab */}
           <TabsContent value="analytics">
             <AnalyticsTab />
+          </TabsContent>
+
+          <TabsContent value="reports">
+            <ReportsTab />
           </TabsContent>
 
           {/* Bookings Tab */}
