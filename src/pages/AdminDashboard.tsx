@@ -33,11 +33,13 @@ import {
   Ban,
   Star,
   MessageSquare,
+  BarChart3,
 } from "lucide-react";
 import { toast } from "sonner";
 import type { Service, Stylist, ServiceCategory } from "@/types/salon";
 import logoMs from "@/assets/logo-ms.png";
 import { Link } from "react-router-dom";
+import AnalyticsTab from "@/components/admin/AnalyticsTab";
 
 const CATEGORIES: ServiceCategory[] = [
   "hair",
@@ -331,13 +333,21 @@ export default function AdminDashboard() {
       </header>
 
       <div className="container py-8">
-        <Tabs defaultValue="bookings">
+        <Tabs defaultValue="analytics">
           <TabsList className="mb-6">
+            <TabsTrigger value="analytics" className="gap-1.5">
+              <BarChart3 className="w-3.5 h-3.5" /> Analytics
+            </TabsTrigger>
             <TabsTrigger value="bookings">Bookings</TabsTrigger>
             <TabsTrigger value="reviews">Reviews</TabsTrigger>
             <TabsTrigger value="services">Services & Rates</TabsTrigger>
             <TabsTrigger value="experts">Experts</TabsTrigger>
           </TabsList>
+
+          {/* Analytics Tab */}
+          <TabsContent value="analytics">
+            <AnalyticsTab />
+          </TabsContent>
 
           {/* Bookings Tab */}
           <TabsContent value="bookings">
