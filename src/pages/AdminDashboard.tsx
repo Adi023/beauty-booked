@@ -340,6 +340,9 @@ export default function AdminDashboard() {
             <TabsTrigger value="analytics" className="gap-1.5">
               <BarChart3 className="w-3.5 h-3.5" /> Analytics
             </TabsTrigger>
+            <TabsTrigger value="reports" className="gap-1.5">
+              <FileText className="w-3.5 h-3.5" /> Reports
+            </TabsTrigger>
             <TabsTrigger value="bookings">Bookings</TabsTrigger>
             <TabsTrigger value="reviews">Reviews</TabsTrigger>
             <TabsTrigger value="services">Services & Rates</TabsTrigger>
