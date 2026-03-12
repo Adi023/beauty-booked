@@ -33,7 +33,13 @@ import {
   Ban,
   Star,
   MessageSquare,
+  BarChart3,
 } from "lucide-react";
+import { toast } from "sonner";
+import type { Service, Stylist, ServiceCategory } from "@/types/salon";
+import logoMs from "@/assets/logo-ms.png";
+import { Link } from "react-router-dom";
+import AnalyticsTab from "@/components/admin/AnalyticsTab";
 import { toast } from "sonner";
 import type { Service, Stylist, ServiceCategory } from "@/types/salon";
 import logoMs from "@/assets/logo-ms.png";
