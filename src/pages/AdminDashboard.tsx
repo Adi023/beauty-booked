@@ -34,12 +34,14 @@ import {
   Star,
   MessageSquare,
   BarChart3,
+  FileText,
 } from "lucide-react";
 import { toast } from "sonner";
 import type { Service, Stylist, ServiceCategory } from "@/types/salon";
 import logoMs from "@/assets/logo-ms.png";
 import { Link } from "react-router-dom";
 import AnalyticsTab from "@/components/admin/AnalyticsTab";
+import ReportsTab from "@/components/admin/ReportsTab";
 
 const CATEGORIES: ServiceCategory[] = [
   "hair",
