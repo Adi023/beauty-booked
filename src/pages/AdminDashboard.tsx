@@ -354,6 +354,10 @@ export default function AdminDashboard() {
             <AnalyticsTab />
           </TabsContent>
 
+          <TabsContent value="reports">
+            <ReportsTab />
+          </TabsContent>
+
           {/* Bookings Tab */}
           <TabsContent value="bookings">
             <div className="mb-4">
