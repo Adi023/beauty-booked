@@ -53,6 +53,8 @@ export default function Header() {
             </Link>
           ))}
 
+          <ThemeToggle />
+
           {isAuthenticated ? (
             <Link to="/dashboard">
               <Button
