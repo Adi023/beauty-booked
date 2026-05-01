@@ -13,29 +13,50 @@ type Msg = { role: "user" | "assistant"; content: string };
 
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
 
-const SUGGESTIONS = [
+const CUSTOMER_SUGGESTIONS = [
   "How do I book an appointment?",
   "What services do you offer?",
   "Where can I see before/after photos?",
   "How do I reschedule a booking?",
 ];
 
-const WELCOME: Msg = {
+const ADMIN_SUGGESTIONS = [
+  "How do I view today's bookings?",
+  "Where are the analytics?",
+  "How do I generate a GST report?",
+  "How do I update staff commission rates?",
+];
+
+const CUSTOMER_WELCOME: Msg = {
   role: "assistant",
   content:
     "Hi! 👋 I'm the **MS Salon assistant**. Ask me anything about our services, bookings, or how to use the app.",
 };
 
+const ADMIN_WELCOME: Msg = {
+  role: "assistant",
+  content:
+    "Hi! 👋 I'm the **MS Salon admin assistant**. I can help you navigate the dashboard — bookings, experts, analytics, and reports. Ask me anything about admin features.",
+};
+
 export default function ChatBot() {
+  const { pathname } = useLocation();
+  const isAdmin = pathname.startsWith("/admin");
+  const welcome = isAdmin ? ADMIN_WELCOME : CUSTOMER_WELCOME;
+  const suggestions = isAdmin ? ADMIN_SUGGESTIONS : CUSTOMER_SUGGESTIONS;
+
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<Msg[]>([WELCOME]);
+  const [messages, setMessages] = useState<Msg[]>([welcome]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const { pathname } = useLocation();
 
-  // Hide on admin routes (Header is hidden there too)
-  const hidden = pathname.startsWith("/admin");
+  // Reset to the right welcome when switching between customer/admin contexts
+  useEffect(() => {
+    setMessages([welcome]);
+    setInput("");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAdmin]);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -63,6 +84,7 @@ export default function ChatBot() {
           },
           body: JSON.stringify({
             messages: next.map((m) => ({ role: m.role, content: m.content })),
+            context: isAdmin ? "admin" : "customer",
           }),
         });
 
@@ -138,10 +160,8 @@ export default function ChatBot() {
         setIsLoading(false);
       }
     },
-    [messages, isLoading],
+    [messages, isLoading, isAdmin],
   );
-
-  if (hidden) return null;
 
   return (
     <>
@@ -177,8 +197,12 @@ export default function ChatBot() {
             <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-primary text-primary-foreground">
               <Sparkles className="w-4 h-4" />
               <div className="flex-1">
-                <p className="font-serif font-semibold text-sm leading-tight">MS Salon Assistant</p>
-                <p className="text-[11px] opacity-80">Ask anything about the app</p>
+                <p className="font-serif font-semibold text-sm leading-tight">
+                  {isAdmin ? "MS Salon Admin Assistant" : "MS Salon Assistant"}
+                </p>
+                <p className="text-[11px] opacity-80">
+                  {isAdmin ? "Help with the admin dashboard" : "Ask anything about the app"}
+                </p>
               </div>
             </div>
 
@@ -252,7 +276,7 @@ export default function ChatBot() {
                 {messages.length === 1 && (
                   <div className="pt-2 space-y-1.5">
                     <p className="text-[11px] text-muted-foreground px-1">Try asking:</p>
-                    {SUGGESTIONS.map((s) => (
+                    {suggestions.map((s) => (
                       <button
                         key={s}
                         onClick={() => send(s)}
