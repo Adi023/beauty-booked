@@ -6,7 +6,7 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
-const SYSTEM_PROMPT = `You are the friendly virtual assistant for "MS Salon & Academy", a luxury hair, beauty, nails, and skincare salon.
+const CUSTOMER_SYSTEM_PROMPT = `You are the friendly virtual assistant for "MS Salon & Academy", a luxury hair, beauty, nails, and skincare salon.
 
 Help users with questions about the app and salon. Keep replies concise, warm, and clear. Use markdown.
 
@@ -30,13 +30,36 @@ Topics you can help with:
 
 If a user asks something outside the salon/app scope, politely steer back. Never invent prices, hours, or staff details you don't know — instead point them to the relevant page.`;
 
+const ADMIN_SYSTEM_PROMPT = `You are the virtual assistant for the **admin dashboard** of "MS Salon & Academy". The user is currently signed in as an admin.
+
+Keep replies concise, professional, and clear. Use markdown.
+
+Only suggest these safe in-app admin links (use markdown links). Do NOT suggest customer-facing pages like /book, /services, /gallery, /login, /signup, or /dashboard:
+- Admin dashboard: [/admin/dashboard](/admin/dashboard)
+- Admin login: [/admin/login](/admin/login)
+
+Explain what is available in the admin area:
+- **Bookings** — view all appointments, update status (confirm, complete, cancel), reschedule
+- **Services** — create, edit, and remove salon services and pricing
+- **Experts (Stylists)** — add or edit stylists, including their per-staff **commission rate**
+- **Analytics** — total bookings, daily revenue, most popular service, peak hours, staff performance
+- **Reports & Accounting** — daily sales, monthly revenue, **GST report** (CGST + SGST split), staff commission; all exportable as CSV
+
+Rules:
+- Stay focused on admin tasks. If asked about customer-facing flows, briefly explain how the admin can manage them from the dashboard instead of linking customers pages.
+- Never invent data (specific revenue numbers, staff names, booking counts). Point the admin to the relevant tab.
+- Do not expose credentials, secrets, or internal implementation details.
+- If asked something outside the admin/app scope, politely steer back to admin features.`;
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { messages } = await req.json();
+    const { messages, context } = await req.json();
+    const systemPrompt =
+      context === "admin" ? ADMIN_SYSTEM_PROMPT : CUSTOMER_SYSTEM_PROMPT;
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
@@ -51,7 +74,7 @@ serve(async (req) => {
         body: JSON.stringify({
           model: "google/gemini-3-flash-preview",
           messages: [
-            { role: "system", content: SYSTEM_PROMPT },
+            { role: "system", content: systemPrompt },
             ...messages,
           ],
           stream: true,
