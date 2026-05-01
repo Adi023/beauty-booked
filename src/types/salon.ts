@@ -18,6 +18,8 @@ export interface Stylist {
   rating: number;
   reviewCount: number;
   specialties: ServiceCategory[];
+  /** Commission percentage (0-100). Defaults to 15 if not set. */
+  commissionRate?: number;
 }
 
 export interface TimeSlot {
