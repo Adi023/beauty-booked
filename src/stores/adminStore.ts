@@ -150,6 +150,7 @@ const INITIAL_STYLISTS: Stylist[] = [
     rating: 5.0,
     reviewCount: 534,
     specialties: ["hair", "makeup", "skin", "nails"],
+    commissionRate: 20,
   },
   {
     id: "2",
@@ -159,6 +160,7 @@ const INITIAL_STYLISTS: Stylist[] = [
     rating: 4.8,
     reviewCount: 189,
     specialties: ["hair"],
+    commissionRate: 15,
   },
   {
     id: "3",
@@ -168,6 +170,7 @@ const INITIAL_STYLISTS: Stylist[] = [
     rating: 5.0,
     reviewCount: 312,
     specialties: ["nails"],
+    commissionRate: 12,
   },
   {
     id: "4",
@@ -177,6 +180,7 @@ const INITIAL_STYLISTS: Stylist[] = [
     rating: 4.9,
     reviewCount: 156,
     specialties: ["skin"],
+    commissionRate: 18,
   },
 ];
 

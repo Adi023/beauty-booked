@@ -15,7 +15,7 @@ import { Download, IndianRupee, Receipt, Users, Calendar } from "lucide-react";
 import { format, parseISO, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isSameMonth } from "date-fns";
 
 const GST_RATE = 0.18;
-const COMMISSION_RATE = 0.15; // 15% default commission
+const DEFAULT_COMMISSION_RATE = 15; // % default commission when stylist has none set
 
 function downloadCSV(filename: string, headers: string[], rows: string[][]) {
   const csv = [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
@@ -458,12 +458,22 @@ function StaffCommissionReport() {
       (b) => b.status === "completed" && b.date.startsWith(selectedMonth)
     );
 
-    const staffMap: Record<string, { services: number; revenue: number; commission: number }> = {};
+    const rateFor = (name: string) => {
+      const s = stylists.find((st) => st.name === name);
+      return (s?.commissionRate ?? DEFAULT_COMMISSION_RATE) / 100;
+    };
+
+    const staffMap: Record<
+      string,
+      { services: number; revenue: number; commission: number; rate: number }
+    > = {};
     completed.forEach((b) => {
-      if (!staffMap[b.stylistName]) staffMap[b.stylistName] = { services: 0, revenue: 0, commission: 0 };
+      const rate = rateFor(b.stylistName);
+      if (!staffMap[b.stylistName])
+        staffMap[b.stylistName] = { services: 0, revenue: 0, commission: 0, rate };
       staffMap[b.stylistName].services += 1;
       staffMap[b.stylistName].revenue += b.price;
-      staffMap[b.stylistName].commission += Math.round(b.price * COMMISSION_RATE);
+      staffMap[b.stylistName].commission += Math.round(b.price * rate);
     });
 
     const staffList = Object.entries(staffMap)
@@ -474,7 +484,7 @@ function StaffCommissionReport() {
     const totalRevenue = staffList.reduce((sum, s) => sum + s.revenue, 0);
 
     return { staffList, totalCommission, totalRevenue };
-  }, [bookings, selectedMonth]);
+  }, [bookings, selectedMonth, stylists]);
 
   return (
     <div className="space-y-4">
@@ -498,11 +508,12 @@ function StaffCommissionReport() {
           onClick={() =>
             downloadCSV(
               `staff-commission-${selectedMonth}.csv`,
-              ["Staff", "Services", "Revenue", "Commission (15%)"],
+              ["Staff", "Services", "Revenue", "Rate (%)", "Commission"],
               commissionData.staffList.map((s) => [
                 s.name,
                 String(s.services),
                 String(s.revenue),
+                String((s.rate * 100).toFixed(1)),
                 String(s.commission),
               ])
             )
@@ -520,13 +531,14 @@ function StaffCommissionReport() {
               <th className="text-left p-3 font-medium">Staff Member</th>
               <th className="text-right p-3 font-medium">Services</th>
               <th className="text-right p-3 font-medium">Revenue</th>
-              <th className="text-right p-3 font-medium">Commission (15%)</th>
+              <th className="text-right p-3 font-medium">Rate</th>
+              <th className="text-right p-3 font-medium">Commission</th>
             </tr>
           </thead>
           <tbody>
             {commissionData.staffList.length === 0 ? (
               <tr>
-                <td colSpan={5} className="p-6 text-center text-muted-foreground">
+                <td colSpan={6} className="p-6 text-center text-muted-foreground">
                   No completed services this month.
                 </td>
               </tr>
@@ -537,6 +549,9 @@ function StaffCommissionReport() {
                   <td className="p-3 font-medium">{s.name}</td>
                   <td className="p-3 text-right">{s.services}</td>
                   <td className="p-3 text-right">₹{s.revenue.toLocaleString("en-IN")}</td>
+                  <td className="p-3 text-right text-muted-foreground">
+                    {(s.rate * 100).toFixed(s.rate * 100 % 1 === 0 ? 0 : 1)}%
+                  </td>
                   <td className="p-3 text-right font-semibold text-primary">
                     ₹{s.commission.toLocaleString("en-IN")}
                   </td>
@@ -549,6 +564,7 @@ function StaffCommissionReport() {
               <tr className="border-t border-border font-semibold">
                 <td colSpan={3} className="p-3 text-right">Total</td>
                 <td className="p-3 text-right">₹{commissionData.totalRevenue.toLocaleString("en-IN")}</td>
+                <td className="p-3" />
                 <td className="p-3 text-right text-primary">
                   ₹{commissionData.totalCommission.toLocaleString("en-IN")}
                 </td>

@@ -160,6 +160,7 @@ function StylistForm({
     rating: stylist?.rating || 5.0,
     reviewCount: stylist?.reviewCount || 0,
     specialties: stylist?.specialties || (["hair"] as ServiceCategory[]),
+    commissionRate: stylist?.commissionRate ?? 15,
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -216,6 +217,22 @@ function StylistForm({
             min={0}
           />
         </div>
+      </div>
+      <div className="space-y-2">
+        <Label>Commission Rate (%)</Label>
+        <Input
+          type="number"
+          step="0.5"
+          min={0}
+          max={100}
+          value={form.commissionRate}
+          onChange={(e) =>
+            setForm({ ...form, commissionRate: +e.target.value })
+          }
+        />
+        <p className="text-xs text-muted-foreground">
+          Percentage of service revenue earned by this expert. Default is 15%.
+        </p>
       </div>
       <div className="space-y-2">
         <Label>Specialties</Label>
@@ -781,6 +798,9 @@ export default function AdminDashboard() {
                       </div>
                       <p className="text-xs text-muted-foreground mt-2">
                         ⭐ {s.rating} · {s.reviewCount} reviews
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Commission: {s.commissionRate ?? 15}%
                       </p>
                     </div>
                     <div className="flex gap-1">
