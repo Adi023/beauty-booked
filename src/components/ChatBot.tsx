@@ -206,6 +206,15 @@ export default function ChatBot() {
               </div>
             </div>
 
+            {/* Admin notice */}
+            {isAdmin && (
+              <div className="px-3 py-1.5 bg-accent/40 border-b border-border">
+                <p className="text-[11px] text-accent-foreground leading-snug">
+                  Admin help only — this assistant will never link to customer pages.
+                </p>
+              </div>
+            )}
+
             {/* Messages */}
             <ScrollArea className="flex-1">
               <div ref={scrollRef} className="p-4 space-y-3">
