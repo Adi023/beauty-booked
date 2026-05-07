@@ -39,6 +39,24 @@ const ADMIN_WELCOME: Msg = {
     "Hi! 👋 I'm the **MS Salon admin assistant**. I can help you navigate the dashboard — bookings, experts, analytics, and reports. Ask me anything about admin features.",
 };
 
+// Whitelist of safe admin link prefixes. Anything else is stripped in admin context.
+const ADMIN_ALLOWED_PREFIXES = ["/admin"];
+const isAdminSafeHref = (href?: string) =>
+  !!href && ADMIN_ALLOWED_PREFIXES.some((p) => href === p || href.startsWith(p + "/") || href.startsWith(p + "?") || href.startsWith(p + "#") || href === p);
+
+/**
+ * In admin context, scrub any markdown link whose href is not on the admin allow-list.
+ * Converts `[label](/book)` → `label`, leaving safe `/admin/...` links intact.
+ */
+function sanitizeAdminMarkdown(md: string): string {
+  if (!md) return md;
+  // [text](href) — non-greedy, no nested brackets
+  return md.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (full, label, href) => {
+    const cleanHref = String(href).trim().split(/\s+/)[0];
+    return isAdminSafeHref(cleanHref) ? full : String(label);
+  });
+}
+
 export default function ChatBot() {
   const { pathname } = useLocation();
   const isAdmin = pathname.startsWith("/admin");
@@ -240,6 +258,12 @@ export default function ChatBot() {
                             components={{
                               a: ({ href, children }) => {
                                 const isInternal = href?.startsWith("/");
+                                // Hard guard: in admin context, never render a link
+                                // to a non-admin internal page, even if the model
+                                // somehow bypassed the markdown sanitizer.
+                                if (isAdmin && isInternal && !isAdminSafeHref(href)) {
+                                  return <>{children}</>;
+                                }
                                 if (isInternal && href) {
                                   return (
                                     <Link
@@ -264,7 +288,7 @@ export default function ChatBot() {
                               },
                             }}
                           >
-                            {m.content || "…"}
+                            {(isAdmin ? sanitizeAdminMarkdown(m.content) : m.content) || "…"}
                           </ReactMarkdown>
                         </div>
                       ) : (
