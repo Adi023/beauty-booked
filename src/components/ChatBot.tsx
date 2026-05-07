@@ -258,6 +258,12 @@ export default function ChatBot() {
                             components={{
                               a: ({ href, children }) => {
                                 const isInternal = href?.startsWith("/");
+                                // Hard guard: in admin context, never render a link
+                                // to a non-admin internal page, even if the model
+                                // somehow bypassed the markdown sanitizer.
+                                if (isAdmin && isInternal && !isAdminSafeHref(href)) {
+                                  return <>{children}</>;
+                                }
                                 if (isInternal && href) {
                                   return (
                                     <Link
@@ -282,7 +288,7 @@ export default function ChatBot() {
                               },
                             }}
                           >
-                            {m.content || "…"}
+                            {(isAdmin ? sanitizeAdminMarkdown(m.content) : m.content) || "…"}
                           </ReactMarkdown>
                         </div>
                       ) : (
